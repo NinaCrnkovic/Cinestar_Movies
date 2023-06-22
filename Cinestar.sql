@@ -1,0 +1,66 @@
+CREATE DATABASE Cinestar;
+GO
+USE Cinestar;
+GO
+
+CREATE TABLE Movie (
+    ID INT PRIMARY KEY IDENTITY,
+    Title NVARCHAR(255),
+    OriginalTitle NVARCHAR(255),
+    Description NVARCHAR(MAX),
+    Duration INT,
+    Year INT,
+    Poster NVARCHAR(MAX),
+    Rating NVARCHAR(50),
+    Link NVARCHAR(MAX),
+    Guid NVARCHAR(MAX),
+    Reservation NVARCHAR(MAX),
+    DisplayDate DATETIME,
+    Performances NVARCHAR(MAX),
+    Sort INT,
+    Trailer NVARCHAR(255)
+);
+
+CREATE TABLE Genre (
+    ID INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(255)
+);
+
+CREATE TABLE Person (
+    ID INT PRIMARY KEY IDENTITY,
+    Name NVARCHAR(255)
+);
+
+CREATE TABLE Role (
+    ID INT PRIMARY KEY IDENTITY,
+    Role NVARCHAR(255)
+);
+
+CREATE TABLE MovieGenre (
+    MovieID INT FOREIGN KEY REFERENCES Movie(ID),
+    GenreID INT FOREIGN KEY REFERENCES Genre(ID)
+);
+
+CREATE TABLE MoviePersonRole (
+    MovieID INT FOREIGN KEY REFERENCES Movie(ID),
+    PersonID INT FOREIGN KEY REFERENCES Person(ID),
+    RoleID INT FOREIGN KEY REFERENCES Role(ID)
+);
+
+CREATE TABLE AccountType (
+    ID INT PRIMARY KEY IDENTITY,
+    Type NVARCHAR(255)
+);
+
+CREATE TABLE [User] (
+    ID INT PRIMARY KEY IDENTITY,
+    Username NVARCHAR(255),
+    Password NVARCHAR(255),
+    AccountTypeID INT FOREIGN KEY REFERENCES AccountType(ID)
+);
+
+CREATE TABLE FavoriteMovie (
+    UserID INT FOREIGN KEY REFERENCES [User](ID),
+    MovieID INT FOREIGN KEY REFERENCES Movie(ID),
+    PRIMARY KEY (UserID, MovieID)
+);
