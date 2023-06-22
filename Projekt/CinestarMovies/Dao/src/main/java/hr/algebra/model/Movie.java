@@ -4,8 +4,9 @@
  */
 package hr.algebra.model;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+
 
 /**
  *
@@ -26,12 +27,12 @@ public final class Movie {
     private String link;
     private String guid;
     private String reservation;
-    private Date displayDate;
+    private LocalDateTime displayDate;
     private String performances;
     private int sort;
     private String trailer;
 
-    public Movie(String title, String originalTitle, String description, int duration, int year, String poster, String rating, String link, String guid, String reservation, Date displayDate, String performances, int sort, String trailer) {
+    public Movie(String title, String originalTitle, String description, int duration, int year, String poster, String rating, String link, String guid, String reservation, LocalDateTime displayDate, String performances, int sort, String trailer) {
         this.title = title;
         this.originalTitle = originalTitle;
         this.description = description;
@@ -48,7 +49,7 @@ public final class Movie {
         this.trailer = trailer;
     }
 
-    public Movie(int id, String title, String originalTitle, String description, int duration, int year, String poster, String rating, String link, String guid, String reservation, Date displayDate, String performances, int sort, String trailer) {
+    public Movie(int id, String title, String originalTitle, String description, int duration, int year, String poster, String rating, String link, String guid, String reservation, LocalDateTime displayDate, String performances, int sort, String trailer) {
         this(title, originalTitle, description, duration, year, poster, rating, link, guid, reservation, displayDate, performances, sort, trailer);
         this.id = id;
     
@@ -142,11 +143,11 @@ public final class Movie {
         this.reservation = reservation;
     }
 
-    public Date getDisplayDate() {
+    public LocalDateTime getDisplayDate() {
         return displayDate;
     }
 
-    public void setDisplayDate(Date displayDate) {
+    public void setDisplayDate(LocalDateTime displayDate) {
         this.displayDate = displayDate;
     }
 

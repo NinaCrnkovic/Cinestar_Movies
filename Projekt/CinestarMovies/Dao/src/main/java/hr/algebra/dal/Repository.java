@@ -11,6 +11,7 @@ import java.util.Optional;
 /**
  *
  * @author Nina
+ * @param <T>
  */
 public interface Repository<T> {
 

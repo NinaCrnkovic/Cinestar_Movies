@@ -4,15 +4,24 @@
  */
 package hr.algebra.model;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
 /**
  *
  * @author Nina
  */
 public final class User {
-        private int id;
-        private String username;
-        private String password;
-        private AccountType accountType;
+
+    private static final String HASH_ALGORITHM = "SHA-256";
+    private static final int SALT_LENGTH = 16;
+
+    private int id;
+    private String username;
+    private String password;
+    private AccountType accountType;
 
     public User(String username, String password) {
         this.username = username;
@@ -27,7 +36,7 @@ public final class User {
     public User(int id, String username, String password, AccountType accountType) {
         this(username, password, accountType);
         this.id = id;
-  
+
     }
 
     public int getId() {
@@ -62,6 +71,24 @@ public final class User {
         this.accountType = accountType;
     }
     
-    
-    
+    public void hashPassword() throws NoSuchAlgorithmException {
+        String salt = generateSalt();
+        String hashedPassword = hashPassword(password, salt);
+        this.password = hashedPassword;
+    }
+
+    private String generateSalt() {
+        byte[] salt = new byte[SALT_LENGTH];
+        SecureRandom secureRandom = new SecureRandom();
+        secureRandom.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+
+    private String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
+        MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
+        messageDigest.update(salt.getBytes());
+        byte[] hashedPassword = messageDigest.digest(password.getBytes());
+        return Base64.getEncoder().encodeToString(hashedPassword);
+    }
+
 }

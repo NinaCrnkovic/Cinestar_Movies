@@ -30,11 +30,17 @@ BEGIN
     IF NOT EXISTS (SELECT * FROM Movie WHERE Title = @Title AND Year = @Year)
     BEGIN
         INSERT INTO Movie(Title, OriginalTitle, Description, Duration, Year, Poster, Rating, Link, Guid, Reservation, DisplayDate, Performances, Sort, Trailer)
-        OUTPUT Inserted.ID INTO @InsertedID
-        VALUES(@Title, @OriginalTitle, @Description, @Duration, @Year, @Poster, @Rating, @Link, @Guid, @Reservation, @DisplayDate, @Performances, @Sort, @Trailer)
+        VALUES (@Title, @OriginalTitle, @Description, @Duration, @Year, @Poster, @Rating, @Link, @Guid, @Reservation, @DisplayDate, @Performances, @Sort, @Trailer)
+        
+        SET @InsertedID = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        SELECT @InsertedID = ID FROM Movie WHERE Title = @Title AND Year = @Year
     END
 END
 GO
+
 
 -- UPDATE PROCEDURE
 CREATE PROCEDURE UpdateMovie
@@ -112,8 +118,9 @@ BEGIN
     IF NOT EXISTS (SELECT * FROM Genre WHERE Name = @Name)
     BEGIN
         INSERT INTO Genre(Name)
-        OUTPUT Inserted.ID INTO @InsertedID
-        VALUES(@Name)
+        VALUES (@Name)
+
+        SET @InsertedID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
@@ -121,6 +128,7 @@ BEGIN
     END
 END
 GO
+
 ----- UPDATE PROCEDURE
 
 CREATE PROCEDURE UpdateGenre
@@ -171,8 +179,9 @@ BEGIN
     IF NOT EXISTS (SELECT * FROM Person WHERE Name = @Name)
     BEGIN
         INSERT INTO Person(Name)
-        OUTPUT Inserted.ID INTO @InsertedID
-        VALUES(@Name)
+        VALUES (@Name)
+
+        SET @InsertedID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
@@ -180,6 +189,7 @@ BEGIN
     END
 END
 GO
+
 ----- UPDATE PROCEDURE
 CREATE PROCEDURE UpdatePerson
     @ID INT,
@@ -225,8 +235,9 @@ BEGIN
     IF NOT EXISTS (SELECT * FROM Role WHERE Role = @Role)
     BEGIN
         INSERT INTO Role(Role)
-        OUTPUT Inserted.ID INTO @InsertedID
-        VALUES(@Role)
+        VALUES (@Role)
+
+        SET @InsertedID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
@@ -234,6 +245,7 @@ BEGIN
     END
 END
 GO
+
 ----- UPDATE PROCEDURE
 CREATE PROCEDURE UpdateRole
     @ID INT,

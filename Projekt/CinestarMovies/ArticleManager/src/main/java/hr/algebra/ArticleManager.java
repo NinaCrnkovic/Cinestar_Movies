@@ -9,7 +9,7 @@ import hr.algebra.view.UploadArticlesPanel;
 
 /**
  *
- * @author daniel.bele
+ * @author Nina
  */
 public class ArticleManager extends javax.swing.JFrame {
 
