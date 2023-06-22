@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
 
-public class SqlRepository implements Repository {
+public class SqlRepository implements Repository<Article> {
 
     private static final String ID_ARTICLE = "IDArticle";
     private static final String TITLE = "Title";
@@ -32,7 +32,8 @@ public class SqlRepository implements Repository {
     private static final String SELECT_ARTICLES = "{ CALL selectArticles }";
 
     @Override
-    public int createArticle(Article article) throws Exception {
+    
+    public int create(Article article) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ARTICLE)) {
 
@@ -49,7 +50,7 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public void createArticles(List<Article> articles) throws Exception {
+    public void createManny(List<Article> articles) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ARTICLE)) {
 
@@ -67,7 +68,7 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public void updateArticle(int id, Article data) throws Exception {
+    public void update(int id, Article data) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_ARTICLE)) {
 
@@ -83,7 +84,7 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public void deleteArticle(int id) throws Exception {
+    public void delete(int id) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(DELETE_ARTICLE)) {
 
@@ -94,7 +95,7 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public Optional<Article> selectArticle(int id) throws Exception {
+    public Optional<Article> select(int id) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_ARTICLE)) {
 
@@ -116,7 +117,7 @@ public class SqlRepository implements Repository {
     }
 
     @Override
-    public List<Article> selectArticles() throws Exception {
+    public List<Article> selectAll() throws Exception {
         List<Article> articles = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_ARTICLES); ResultSet rs = stmt.executeQuery()) {
@@ -133,5 +134,9 @@ public class SqlRepository implements Repository {
         }
         return articles;
     }
+
+ 
+
+    
 
 }

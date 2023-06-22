@@ -1,6 +1,6 @@
-CREATE DATABASE Cinestar;
+CREATE DATABASE CineStarMovies;
 GO
-USE Cinestar;
+USE CineStarMovies;
 GO
 
 CREATE TABLE Movie (
@@ -55,7 +55,8 @@ CREATE TABLE AccountType (
 CREATE TABLE [User] (
     ID INT PRIMARY KEY IDENTITY,
     Username NVARCHAR(255),
-    Password NVARCHAR(255),
+    PwdHash NVARCHAR(Max),
+	PwdSalt NVARCHAR(Max),
     AccountTypeID INT FOREIGN KEY REFERENCES AccountType(ID)
 );
 

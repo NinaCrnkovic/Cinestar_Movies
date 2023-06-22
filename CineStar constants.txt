@@ -1,0 +1,86 @@
+CineStar constants
+
+----------------------Movie
+private static final String ID_MOVIE = "IDMovie";
+private static final String TITLE = "Title";
+private static final String ORIGINAL_TITLE = "OriginalTitle";
+private static final String DESCRIPTION = "Description";
+private static final String DURATION = "Duration";
+private static final String YEAR = "Year";
+private static final String POSTER = "Poster";
+private static final String RATING = "Rating";
+private static final String LINK = "Link";
+private static final String GUID = "Guid";
+private static final String RESERVATION = "Reservation";
+private static final String DISPLAY_DATE = "DisplayDate";
+private static final String PERFORMANCES = "Performances";
+private static final String SORT = "Sort";
+private static final String TRAILER = "Trailer";
+
+private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+private static final String DELETE_MOVIE = "{ CALL DeleteMovie (?) }";
+private static final String SELECT_MOVIE = "{ CALL SelectMovie (?) }";
+private static final String SELECT_MOVIES = "{ CALL SelectMovies }";
+
+
+
+
+-----------------Genre
+private static final String ID_GENRE = "IDGenre";
+private static final String NAME = "Name";
+
+private static final String CREATE_GENRE = "{ CALL CreateGenre (?,?) }";
+private static final String UPDATE_GENRE = "{ CALL UpdateGenre (?,?) }";
+private static final String DELETE_GENRE = "{ CALL DeleteGenre (?) }";
+private static final String SELECT_GENRE = "{ CALL SelectGenre (?) }";
+private static final String SELECT_GENRES = "{ CALL SelectGenres }";
+
+
+
+----Person
+private static final String ID_PERSON = "IDPerson";
+private static final String NAME = "Name";
+
+private static final String CREATE_PERSON = "{ CALL CreatePerson (?,?) }";
+private static final String UPDATE_PERSON = "{ CALL UpdatePerson (?,?) }";
+private static final String DELETE_PERSON = "{ CALL DeletePerson (?) }";
+private static final String SELECT_PERSON = "{ CALL SelectPerson (?) }";
+private static final String SELECT_PERSONS = "{ CALL SelectPersons }";
+
+
+
+---- Role
+private static final String ID_ROLE = "IDRole";
+private static final String ROLE = "Role";
+
+private static final String CREATE_ROLE = "{ CALL CreateRole (?,?) }";
+private static final String UPDATE_ROLE = "{ CALL UpdateRole (?,?) }";
+private static final String DELETE_ROLE = "{ CALL DeleteRole (?) }";
+private static final String SELECT_ROLE = "{ CALL SelectRole (?) }";
+private static final String SELECT_ROLES = "{ CALL SelectRoles }";
+
+--------- MovieGenre
+private static final String ID_MOVIE_GENRE = "IDMovieGenre";
+private static final String MOVIE_ID = "MovieID";
+private static final String GENRE_ID = "GenreID";
+
+private static final String CREATE_MOVIE_GENRE = "{ CALL CreateMovieGenre (?,?) }";
+private static final String UPDATE_MOVIE_GENRE = "{ CALL UpdateMovieGenre (?,?,?,?) }";
+private static final String DELETE_MOVIE_GENRE = "{ CALL DeleteMovieGenre (?,?) }";
+private static final String SELECT_MOVIE_GENRES = "{ CALL SelectMovieGenres }";
+
+----------MoviePersonRole
+private static final String ID_MOVIE_PERSON_ROLE = "IDMoviePersonRole";
+private static final String PERSON_ID = "PersonID";
+private static final String ROLE_ID = "RoleID";
+
+private static final String CREATE_MOVIE_PERSON_ROLE = "{ CALL CreateMoviePersonRole (?,?,?) }";
+private static final String UPDATE_MOVIE_PERSON_ROLE = "{ CALL UpdateMoviePersonRole (?,?,?,?,?,?) }";
+private static final String DELETE_MOVIE_PERSON_ROLE = "{ CALL DeleteMoviePersonRole (?,?,?) }";
+private static final String SELECT_MOVIE_PERSON_ROLES = "{ CALL SelectMoviePersonRoles }";
+private static final String SELECT_MOVIE_PERSONS_ROLES = "{ CALL SelectMoviePersonsRoles (?) }";
+
+
+
+

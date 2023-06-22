@@ -4,26 +4,26 @@
  */
 package hr.algebra.dal;
 
-import hr.algebra.model.Article;
+
 import java.util.List;
 import java.util.Optional;
 
 /**
  *
- * @author daniel.bele
+ * @author Nina
  */
-public interface Repository {
+public interface Repository<T> {
 
-    int createArticle(Article article) throws Exception;
+    int create(T t) throws Exception;
+ 
+    void createManny(List<T> t) throws Exception;
 
-    void createArticles(List<Article> articles) throws Exception;
+    void update(int id, T t) throws Exception;
 
-    void updateArticle(int id, Article data) throws Exception;
+    void delete(int id) throws Exception;
 
-    void deleteArticle(int id) throws Exception;
+    Optional<T> select(int id) throws Exception;
 
-    Optional<Article> selectArticle(int id) throws Exception;
-
-    List<Article> selectArticles() throws Exception;
+    List<T> selectAll() throws Exception;
 
 }

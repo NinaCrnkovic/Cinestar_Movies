@@ -1,6 +1,12 @@
-hr\algebra\model\Movie.class
-hr\algebra\dal\sql\SqlRepository.class
+hr\algebra\model\AccountType.class
 hr\algebra\dal\Repository.class
+hr\algebra\model\Genre.class
 hr\algebra\dal\RepositoryFactory.class
 hr\algebra\dal\sql\DataSourceSingleton.class
+hr\algebra\model\Movie.class
+hr\algebra\dal\sql\SqlRepository.class
+hr\algebra\model\Person.class
+hr\algebra\model\User.class
 hr\algebra\model\Article.class
+hr\algebra\model\Role.class
+hr\algebra\model\FavoriteMovie.class
