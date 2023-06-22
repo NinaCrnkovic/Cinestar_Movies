@@ -72,7 +72,7 @@ public class MovieRepository implements Repository<Movie> {
     }
     
     
-    @Override
+
    public void createManny(List<Movie> movies) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_MOVIE)) {
@@ -168,7 +168,7 @@ public class MovieRepository implements Repository<Movie> {
         return Optional.empty();
     }
 
-    @Override
+
     public List<Movie> selectAll() throws Exception {
         List<Movie> movies = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();

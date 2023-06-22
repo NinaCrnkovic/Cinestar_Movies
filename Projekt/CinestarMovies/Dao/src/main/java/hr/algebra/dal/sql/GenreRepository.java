@@ -43,7 +43,7 @@ public class GenreRepository implements Repository<Genre> {
         }
     }
 
-     @Override
+
     public void createManny(List<Genre> genres) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_GENRE)) {
@@ -98,7 +98,7 @@ public class GenreRepository implements Repository<Genre> {
         return Optional.empty();
     }
 
-    @Override
+   
     public List<Genre> selectAll() throws Exception {
         List<Genre> genres = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();

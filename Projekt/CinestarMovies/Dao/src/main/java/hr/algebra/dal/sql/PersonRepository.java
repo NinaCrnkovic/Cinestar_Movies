@@ -43,19 +43,19 @@ public class PersonRepository implements Repository<Person> {
         }
     }
 
-    @Override
-    public void createManny(List<Person> persons) throws Exception {
-        DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_PERSON)) {
-
-            for (Person person : persons) {
-                stmt.setString(NAME, person.getName());
-                stmt.registerOutParameter(ID_PERSON, Types.INTEGER);
-
-                stmt.executeUpdate();
-            }
-        }
-    }
+// 
+//    public void createManny(List<Person> persons) throws Exception {
+//        DataSource dataSource = DataSourceSingleton.getInstance();
+//        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_PERSON)) {
+//
+//            for (Person person : persons) {
+//                stmt.setString(NAME, person.getName());
+//                stmt.registerOutParameter(ID_PERSON, Types.INTEGER);
+//
+//                stmt.executeUpdate();
+//            }
+//        }
+//    }
 
     @Override
     public void update(int id, Person person) throws Exception {
@@ -98,20 +98,20 @@ public class PersonRepository implements Repository<Person> {
         return Optional.empty();
     }
 
-    @Override
-    public List<Person> selectAll() throws Exception {
-        List<Person> persons = new ArrayList<>();
-        DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_PERSONS); ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                persons.add(new Person(
-                        rs.getInt(ID_PERSON),
-                        rs.getString(NAME)));
-            }
-        }
-        return persons;
-    }
+//
+//    public List<Person> selectAll() throws Exception {
+//        List<Person> persons = new ArrayList<>();
+//        DataSource dataSource = DataSourceSingleton.getInstance();
+//        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_PERSONS); ResultSet rs = stmt.executeQuery()) {
+//
+//            while (rs.next()) {
+//                persons.add(new Person(
+//                        rs.getInt(ID_PERSON),
+//                        rs.getString(NAME)));
+//            }
+//        }
+//        return persons;
+//    }
 
   
 

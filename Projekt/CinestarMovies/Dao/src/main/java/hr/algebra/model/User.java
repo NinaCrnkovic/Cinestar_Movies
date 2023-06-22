@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Set;
 
 /**
  *
@@ -21,20 +22,23 @@ public final class User {
     private int id;
     private String username;
     private String password;
-    private AccountType accountType;
+    private int accountTypeId;
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        setAccountType(2);
+
+        
     }
 
-    public User(String username, String password, AccountType accountType) {
+    public User(String username, String password, int accountTypeId) {
         this(username, password);
-        this.accountType = accountType;
+        this.accountTypeId = accountTypeId;
     }
 
-    public User(int id, String username, String password, AccountType accountType) {
-        this(username, password, accountType);
+    public User(int id, String username, String password, int accountTypeId) {
+        this(username, password, accountTypeId);
         this.id = id;
 
     }
@@ -63,12 +67,12 @@ public final class User {
         this.password = password;
     }
 
-    public AccountType getAccountType() {
-        return accountType;
+    public int getAccountTypeId() {
+        return accountTypeId;
     }
 
-    public void setAccountType(AccountType accountType) {
-        this.accountType = accountType;
+    public void setAccountType(int accountTypeId) {
+        this.accountTypeId = accountTypeId;
     }
     
     public void hashPassword() throws NoSuchAlgorithmException {

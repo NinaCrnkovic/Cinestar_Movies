@@ -8,10 +8,14 @@ package hr.algebra.model;
  *
  * @author Nina
  */
-public final class FavoriteMovie {
-   
+public final class MovieGenre {
     private int movieId;
-    private int userId;
+    private int genreId;
+
+    public MovieGenre(int movieId, int genreId) {
+        this.movieId = movieId;
+        this.genreId = genreId;
+    }
 
     public int getMovieId() {
         return movieId;
@@ -21,18 +25,14 @@ public final class FavoriteMovie {
         this.movieId = movieId;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getGenreId() {
+        return genreId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setGenreId(int genreId) {
+        this.genreId = genreId;
     }
-
-    public FavoriteMovie(int movieId, int userId) {
-        this.movieId = movieId;
-        this.userId = userId;
-    }
-       
-       
+    
+    
+    
 }

@@ -43,19 +43,19 @@ public class RoleRepostiory implements Repository<Role> {
         }
     }
 
-    @Override
-    public void createManny(List<Role> roles) throws Exception {
-        DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ROLE)) {
-
-            for (Role role : roles) {
-                stmt.setString(ROLE, role.getRole());
-                stmt.registerOutParameter(ID_ROLE, Types.INTEGER);
-
-                stmt.executeUpdate();
-            }
-        }
-    }
+// 
+//    public void createManny(List<Role> roles) throws Exception {
+//        DataSource dataSource = DataSourceSingleton.getInstance();
+//        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ROLE)) {
+//
+//            for (Role role : roles) {
+//                stmt.setString(ROLE, role.getRole());
+//                stmt.registerOutParameter(ID_ROLE, Types.INTEGER);
+//
+//                stmt.executeUpdate();
+//            }
+//        }
+//    }
 
     @Override
     public void update(int id, Role role) throws Exception {
@@ -98,7 +98,7 @@ public class RoleRepostiory implements Repository<Role> {
         return Optional.empty();
     }
 
-    @Override
+
     public List<Role> selectAll() throws Exception {
         List<Role> roles = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();

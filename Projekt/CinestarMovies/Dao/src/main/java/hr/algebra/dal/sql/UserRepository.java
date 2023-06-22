@@ -49,22 +49,22 @@ public class UserRepository implements Repository<User> {
         }
     }
 
-    @Override
-    public void createMany(List<User> users) throws Exception {
-        DataSource dataSource = DataSourceSingleton.getInstance();
-        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_USER)) {
-            for (User user : users) {
-
-                stmt.setString(USERNAME, user.getUsername());
-                stmt.setString(PWD_HASH, user.getPassword());
-                stmt.setString(PWD_SALT, ""); // Empty salt for now, to be generated during password hashing
-                stmt.setInt(ACCOUNT_TYPE_ID, user.getAccountTypeId());
-                stmt.registerOutParameter(ID_USER, Types.INTEGER);
-
-                stmt.executeUpdate();
-            }
-        }
-    }
+ 
+//    public void createManny(List<User> users) throws Exception {
+//        DataSource dataSource = DataSourceSingleton.getInstance();
+//        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_USER)) {
+//            for (User user : users) {
+//
+//                stmt.setString(USERNAME, user.getUsername());
+//                stmt.setString(PWD_HASH, user.getPassword());
+//                stmt.setString(PWD_SALT, ""); // Empty salt for now, to be generated during password hashing
+//                stmt.setInt(ACCOUNT_TYPE_ID, user.getAccountTypeId());
+//                stmt.registerOutParameter(ID_USER, Types.INTEGER);
+//
+//                stmt.executeUpdate();
+//            }
+//        }
+//    }
 
     @Override
     public void update(int id, User user) throws Exception {
@@ -110,7 +110,7 @@ public class UserRepository implements Repository<User> {
         return Optional.empty();
     }
 
-    @Override
+ 
     public List<User> selectAll() throws Exception {
         List<User> users = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();
@@ -128,6 +128,6 @@ public class UserRepository implements Repository<User> {
         return users;
     }
 
-    
+   
 
 }

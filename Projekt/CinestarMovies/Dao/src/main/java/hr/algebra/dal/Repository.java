@@ -17,7 +17,7 @@ public interface Repository<T> {
 
     int create(T t) throws Exception;
  
-    void createManny(List<T> t) throws Exception;
+    //void createManny(List<T> t) throws Exception;
 
     void update(int id, T t) throws Exception;
 
@@ -25,6 +25,6 @@ public interface Repository<T> {
 
     Optional<T> select(int id) throws Exception;
 
-    List<T> selectAll() throws Exception;
+    //List<T> selectAll() throws Exception;
 
 }

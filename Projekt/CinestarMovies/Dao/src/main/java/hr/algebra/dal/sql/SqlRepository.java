@@ -49,7 +49,7 @@ public class SqlRepository implements Repository<Article> {
         }
     }
 
-    @Override
+
     public void createManny(List<Article> articles) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ARTICLE)) {
@@ -116,7 +116,7 @@ public class SqlRepository implements Repository<Article> {
         return Optional.empty();
     }
 
-    @Override
+
     public List<Article> selectAll() throws Exception {
         List<Article> articles = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();
