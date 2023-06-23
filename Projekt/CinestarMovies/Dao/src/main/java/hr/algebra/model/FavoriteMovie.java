@@ -9,10 +9,32 @@ package hr.algebra.model;
  * @author Nina
  */
 public final class FavoriteMovie {
-   
+
+    
+    private int favoriteMovieId;
     private int movieId;
     private int userId;
 
+    public FavoriteMovie(int movieId, int userId) {
+        this.movieId = movieId;
+        this.userId = userId;
+    }
+    
+    public FavoriteMovie(int favoriteMovieId, int movieId, int userId) {
+        this(movieId, userId);
+        this.favoriteMovieId = favoriteMovieId;
+     
+    }
+
+    public int getFavoriteMovieId() {
+        return favoriteMovieId;
+    }
+
+    public void setFavoriteMovieId(int favoriteMovieId) {
+        this.favoriteMovieId = favoriteMovieId;
+    }
+    
+    
     public int getMovieId() {
         return movieId;
     }
@@ -29,10 +51,7 @@ public final class FavoriteMovie {
         this.userId = userId;
     }
 
-    public FavoriteMovie(int movieId, int userId) {
-        this.movieId = movieId;
-        this.userId = userId;
-    }
+ 
        
        
 }

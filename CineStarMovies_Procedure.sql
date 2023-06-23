@@ -11,6 +11,7 @@ GO
 ----- CREATE PROCEDURE
 CREATE PROCEDURE CreateMovie
     @Title NVARCHAR(255),
+	@PubDate DATETIME,
     @OriginalTitle NVARCHAR(255),
     @Description NVARCHAR(MAX),
     @Duration INT,
@@ -29,8 +30,8 @@ AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM Movie WHERE Title = @Title AND Year = @Year)
     BEGIN
-        INSERT INTO Movie(Title, OriginalTitle, Description, Duration, Year, Poster, Rating, Link, Guid, Reservation, DisplayDate, Performances, Sort, Trailer)
-        VALUES (@Title, @OriginalTitle, @Description, @Duration, @Year, @Poster, @Rating, @Link, @Guid, @Reservation, @DisplayDate, @Performances, @Sort, @Trailer)
+        INSERT INTO Movie(Title, PubDate, OriginalTitle, Description, Duration, Year, Poster, Rating, Link, Guid, Reservation, DisplayDate, Performances, Sort, Trailer)
+        VALUES (@Title,@PubDate, @OriginalTitle, @Description, @Duration, @Year, @Poster, @Rating, @Link, @Guid, @Reservation, @DisplayDate, @Performances, @Sort, @Trailer)
         
         SET @InsertedID = SCOPE_IDENTITY()
     END
@@ -45,6 +46,7 @@ GO
 -- UPDATE PROCEDURE
 CREATE PROCEDURE UpdateMovie
     @ID INT,
+	@PubDate DATETIME,
     @Title NVARCHAR(255),
     @OriginalTitle NVARCHAR(255),
     @Description NVARCHAR(MAX),
@@ -63,6 +65,7 @@ AS
 BEGIN
     UPDATE Movie
     SET Title = @Title,
+		PubDate = @PubDate,
         OriginalTitle = @OriginalTitle,
         Description = @Description,
         Duration = @Duration,
@@ -285,39 +288,56 @@ GO
 ----------------------------- MovieGenre
 ----- CREATE PROCEDURE
 
+---------------------- MovieGenre
+----- CREATE PROCEDURE
 CREATE PROCEDURE CreateMovieGenre
     @MovieID INT,
-    @GenreID INT
+    @GenreID INT,
+    @InsertedID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM MovieGenre WHERE MovieID = @MovieID AND GenreID = @GenreID)
     BEGIN
         INSERT INTO MovieGenre(MovieID, GenreID)
-        VALUES(@MovieID, @GenreID)
+        VALUES (@MovieID, @GenreID)
+
+        SET @InsertedID = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        SELECT @InsertedID = ID FROM MovieGenre WHERE MovieID = @MovieID AND GenreID = @GenreID
     END
 END
 GO
 
+----- UPDATE PROCEDURE
 CREATE PROCEDURE UpdateMovieGenre
-    @OldMovieID INT,
-    @OldGenreID INT,
-    @NewMovieID INT,
-    @NewGenreID INT
-AS
-BEGIN
-    UPDATE MovieGenre
-    SET MovieID = @NewMovieID, GenreID = @NewGenreID
-    WHERE MovieID = @OldMovieID AND GenreID = @OldGenreID
-END
-GO
-
-
-CREATE PROCEDURE DeleteMovieGenre
+    @ID INT,
     @MovieID INT,
     @GenreID INT
 AS
 BEGIN
-    DELETE FROM MovieGenre WHERE MovieID = @MovieID AND GenreID = @GenreID
+    UPDATE MovieGenre
+    SET MovieID = @MovieID, GenreID = @GenreID
+    WHERE ID = @ID
+END
+GO
+
+----- DELETE PROCEDURE
+CREATE PROCEDURE DeleteMovieGenre
+    @ID INT
+AS
+BEGIN
+    DELETE FROM MovieGenre WHERE ID = @ID
+END
+GO
+
+----- SELECT PROCEDURE
+CREATE PROCEDURE SelectMovieGenre
+    @ID INT
+AS
+BEGIN
+    SELECT * FROM MovieGenre WHERE ID = @ID
 END
 GO
 
@@ -328,59 +348,61 @@ BEGIN
 END
 GO
 
--------------------------- MoviePersonRole
+
+---------------------- MoviePersonRole
+----- CREATE PROCEDURE
 CREATE PROCEDURE CreateMoviePersonRole
     @MovieID INT,
     @PersonID INT,
-    @RoleID INT
+    @RoleID INT,
+    @InsertedID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM MoviePersonRole WHERE MovieID = @MovieID AND PersonID = @PersonID AND RoleID = @RoleID)
     BEGIN
         INSERT INTO MoviePersonRole(MovieID, PersonID, RoleID)
-        VALUES(@MovieID, @PersonID, @RoleID)
+        VALUES (@MovieID, @PersonID, @RoleID)
+
+        SET @InsertedID = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        SELECT @InsertedID = ID FROM MoviePersonRole WHERE MovieID = @MovieID AND PersonID = @PersonID AND RoleID = @RoleID
     END
 END
 GO
------ DELETE PROCEDURE
 
-CREATE PROCEDURE DeleteMoviePersonRole
+----- UPDATE PROCEDURE
+CREATE PROCEDURE UpdateMoviePersonRole
+    @ID INT,
     @MovieID INT,
     @PersonID INT,
     @RoleID INT
 AS
 BEGIN
-    DELETE FROM MoviePersonRole WHERE MovieID = @MovieID AND PersonID = @PersonID AND RoleID = @RoleID
-END
-GO
------ UPDATE PROCEDURE
-CREATE PROCEDURE UpdateMoviePersonRole
-    @OldMovieID INT,
-    @OldPersonID INT,
-    @OldRoleID INT,
-    @NewMovieID INT,
-    @NewPersonID INT,
-    @NewRoleID INT
-AS
-BEGIN
     UPDATE MoviePersonRole
-    SET MovieID = @NewMovieID, PersonID = @NewPersonID, RoleID = @NewRoleID
-    WHERE MovieID = @OldMovieID AND PersonID = @OldPersonID AND RoleID = @OldRoleID
-END
-GO
------ SELECT PROCEDURE
-CREATE PROCEDURE SelectMoviePersonsRoles
-    @MovieID INT
-AS
-BEGIN
-    SELECT p.Name as Person, r.Role as Role
-    FROM Person p
-    JOIN MoviePersonRole mpr ON p.ID = mpr.PersonID
-    JOIN Role r ON mpr.RoleID = r.ID
-    WHERE mpr.MovieID = @MovieID
+    SET MovieID = @MovieID, PersonID = @PersonID, RoleID = @RoleID
+    WHERE ID = @ID
 END
 GO
 
+----- DELETE PROCEDURE
+CREATE PROCEDURE DeleteMoviePersonRole
+    @ID INT
+AS
+BEGIN
+    DELETE FROM MoviePersonRole WHERE ID = @ID
+END
+GO
+
+----- SELECT PROCEDURE
+CREATE PROCEDURE SelectMoviePersonRole
+    @ID INT
+AS
+BEGIN
+    SELECT * FROM MoviePersonRole WHERE ID = @ID
+END
+GO
 
 CREATE PROCEDURE SelectMoviePersonRoles
 AS
@@ -388,6 +410,8 @@ BEGIN
     SELECT * FROM MoviePersonRole
 END
 GO
+
+
 
 
 -- AccountType
@@ -508,37 +532,62 @@ BEGIN
 END
 GO
 
--- FavoriteMovie
+---------------------- FavoriteMovie
+----- CREATE PROCEDURE
 CREATE PROCEDURE CreateFavoriteMovie
     @UserID INT,
-    @MovieID INT
+    @MovieID INT,
+    @InsertedID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM FavoriteMovie WHERE UserID = @UserID AND MovieID = @MovieID)
     BEGIN
         INSERT INTO FavoriteMovie(UserID, MovieID)
         VALUES (@UserID, @MovieID)
+
+        SET @InsertedID = SCOPE_IDENTITY()
+    END
+    ELSE
+    BEGIN
+        SELECT @InsertedID = ID FROM FavoriteMovie WHERE UserID = @UserID AND MovieID = @MovieID
     END
 END
 GO
 
-CREATE PROCEDURE DeleteFavoriteMovie
+----- UPDATE PROCEDURE
+CREATE PROCEDURE UpdateFavoriteMovie
+    @ID INT,
     @UserID INT,
     @MovieID INT
 AS
 BEGIN
-    DELETE FROM FavoriteMovie
-    WHERE UserID = @UserID AND MovieID = @MovieID
+    UPDATE FavoriteMovie
+    SET UserID = @UserID, MovieID = @MovieID
+    WHERE ID = @ID
+END
+GO
+
+----- DELETE PROCEDURE
+CREATE PROCEDURE DeleteFavoriteMovie
+    @ID INT
+AS
+BEGIN
+    DELETE FROM FavoriteMovie WHERE ID = @ID
+END
+GO
+
+----- SELECT PROCEDURE
+CREATE PROCEDURE SelectFavoriteMovie
+    @ID INT
+AS
+BEGIN
+    SELECT * FROM FavoriteMovie WHERE ID = @ID
 END
 GO
 
 CREATE PROCEDURE SelectFavoriteMovies
-    @UserID INT
 AS
 BEGIN
-    SELECT m.*
-    FROM Movie m
-    JOIN FavoriteMovie fm ON m.ID = fm.MovieID
-    WHERE fm.UserID = @UserID
+    SELECT * FROM FavoriteMovie
 END
 GO

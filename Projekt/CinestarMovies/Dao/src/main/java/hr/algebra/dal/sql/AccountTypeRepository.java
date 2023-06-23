@@ -43,7 +43,7 @@ public class AccountTypeRepository implements Repository<AccountType> {
         }
     }
 
-    
+    @Override
     public void createManny(List<AccountType> accountTypes) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_ACCOUNT_TYPE)) {
@@ -98,7 +98,7 @@ public class AccountTypeRepository implements Repository<AccountType> {
         return Optional.empty();
     }
 
- 
+    @Override
     public List<AccountType> selectAll() throws Exception {
         List<AccountType> accountTypes = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();

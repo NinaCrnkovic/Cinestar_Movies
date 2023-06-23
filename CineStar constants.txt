@@ -61,25 +61,31 @@ private static final String SELECT_ROLE = "{ CALL SelectRole (?) }";
 private static final String SELECT_ROLES = "{ CALL SelectRoles }";
 
 --------- MovieGenre
-private static final String ID_MOVIE_GENRE = "IDMovieGenre";
+// Table Column Names
+private static final String ID = "ID";
 private static final String MOVIE_ID = "MovieID";
 private static final String GENRE_ID = "GenreID";
 
-private static final String CREATE_MOVIE_GENRE = "{ CALL CreateMovieGenre (?,?) }";
-private static final String UPDATE_MOVIE_GENRE = "{ CALL UpdateMovieGenre (?,?,?,?) }";
-private static final String DELETE_MOVIE_GENRE = "{ CALL DeleteMovieGenre (?,?) }";
+// Stored Procedure Calls
+private static final String CREATE_MOVIE_GENRE = "{ CALL CreateMovieGenre (?,?,?) }";
+private static final String UPDATE_MOVIE_GENRE = "{ CALL UpdateMovieGenre (?,?,?) }";
+private static final String DELETE_MOVIE_GENRE = "{ CALL DeleteMovieGenre (?) }";
+private static final String SELECT_MOVIE_GENRE = "{ CALL SelectMovieGenre (?) }";
 private static final String SELECT_MOVIE_GENRES = "{ CALL SelectMovieGenres }";
 
 ----------MoviePersonRole
-private static final String ID_MOVIE_PERSON_ROLE = "IDMoviePersonRole";
+
+private static final String ID = "ID";
+private static final String MOVIE_ID = "MovieID";
 private static final String PERSON_ID = "PersonID";
 private static final String ROLE_ID = "RoleID";
 
-private static final String CREATE_MOVIE_PERSON_ROLE = "{ CALL CreateMoviePersonRole (?,?,?) }";
-private static final String UPDATE_MOVIE_PERSON_ROLE = "{ CALL UpdateMoviePersonRole (?,?,?,?,?,?) }";
-private static final String DELETE_MOVIE_PERSON_ROLE = "{ CALL DeleteMoviePersonRole (?,?,?) }";
+private static final String CREATE_MOVIE_PERSON_ROLE = "{ CALL CreateMoviePersonRole (?,?,?,?) }";
+private static final String UPDATE_MOVIE_PERSON_ROLE = "{ CALL UpdateMoviePersonRole (?,?,?,?) }";
+private static final String DELETE_MOVIE_PERSON_ROLE = "{ CALL DeleteMoviePersonRole (?) }";
+private static final String SELECT_MOVIE_PERSON_ROLE = "{ CALL SelectMoviePersonRole (?) }";
 private static final String SELECT_MOVIE_PERSON_ROLES = "{ CALL SelectMoviePersonRoles }";
-private static final String SELECT_MOVIE_PERSONS_ROLES = "{ CALL SelectMoviePersonsRoles (?) }";
+
 
 
 ---AccountType
@@ -105,12 +111,18 @@ private static final String SELECT_USER = "{ CALL SelectUser (?) }";
 private static final String SELECT_USERS = "{ CALL SelectUsers }";
 
 ---- FavoriteMovie
-private static final String ID_FAVORITE_MOVIE = "IDFavoriteMovie";
+// Table Column Names
+private static final String ID = "ID";
 private static final String USER_ID = "UserID";
+private static final String MOVIE_ID = "MovieID";
 
-private static final String CREATE_FAVORITE_MOVIE = "{ CALL CreateFavoriteMovie (?,?) }";
-private static final String DELETE_FAVORITE_MOVIE = "{ CALL DeleteFavoriteMovie (?,?) }";
-private static final String SELECT_FAVORITE_MOVIES = "{ CALL SelectFavoriteMovies (?) }";
+// Stored Procedure Calls
+private static final String CREATE_FAVORITE_MOVIE = "{ CALL CreateFavoriteMovie (?,?,?) }";
+private static final String UPDATE_FAVORITE_MOVIE = "{ CALL UpdateFavoriteMovie (?,?,?) }";
+private static final String DELETE_FAVORITE_MOVIE = "{ CALL DeleteFavoriteMovie (?) }";
+private static final String SELECT_FAVORITE_MOVIE = "{ CALL SelectFavoriteMovie (?) }";
+private static final String SELECT_FAVORITE_MOVIES = "{ CALL SelectFavoriteMovies }";
+
 
 
 

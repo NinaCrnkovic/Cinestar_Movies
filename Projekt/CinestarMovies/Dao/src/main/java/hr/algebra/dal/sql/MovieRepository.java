@@ -23,6 +23,7 @@ public class MovieRepository implements Repository<Movie> {
 
     private static final String ID_MOVIE = "IDMovie";
     private static final String TITLE = "Title";
+    private static final String PUB_DATE = "PubDate";
     private static final String ORIGINAL_TITLE = "OriginalTitle";
     private static final String DESCRIPTION = "Description";
     private static final String DURATION = "Duration";
@@ -37,8 +38,8 @@ public class MovieRepository implements Repository<Movie> {
     private static final String SORT = "Sort";
     private static final String TRAILER = "Trailer";
 
-    private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
-    private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+    private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+    private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
     private static final String DELETE_MOVIE = "{ CALL DeleteMovie (?) }";
     private static final String SELECT_MOVIE = "{ CALL SelectMovie (?) }";
     private static final String SELECT_MOVIES = "{ CALL SelectMovies }";
@@ -51,6 +52,7 @@ public class MovieRepository implements Repository<Movie> {
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_MOVIE)) {
 
             stmt.setString(TITLE, movie.getTitle());
+            stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_FORMATTER));
             stmt.setString(ORIGINAL_TITLE, movie.getOriginalTitle());
             stmt.setString(DESCRIPTION, movie.getDescription());
             stmt.setInt(DURATION, movie.getDuration());
@@ -72,13 +74,14 @@ public class MovieRepository implements Repository<Movie> {
     }
     
     
-
+    @Override
    public void createManny(List<Movie> movies) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_MOVIE)) {
 
             for (Movie movie : movies) {
                 stmt.setString(TITLE, movie.getTitle());
+                stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_FORMATTER));
                 stmt.setString(ORIGINAL_TITLE, movie.getOriginalTitle());
                 stmt.setString(DESCRIPTION, movie.getDescription());
                 stmt.setInt(DURATION, movie.getDuration());
@@ -107,6 +110,7 @@ public class MovieRepository implements Repository<Movie> {
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_MOVIE)) {
 
             stmt.setString(TITLE, movie.getTitle());
+            stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_FORMATTER));
             stmt.setString(ORIGINAL_TITLE, movie.getOriginalTitle());
             stmt.setString(DESCRIPTION, movie.getDescription());
             stmt.setInt(DURATION, movie.getDuration());
@@ -149,6 +153,7 @@ public class MovieRepository implements Repository<Movie> {
                     return Optional.of(new Movie(
                             rs.getInt(ID_MOVIE),
                             rs.getString(TITLE),
+                            LocalDateTime.parse(rs.getString(PUB_DATE), Movie.DATE_FORMATTER),
                             rs.getString(ORIGINAL_TITLE),
                             rs.getString(DESCRIPTION),
                             rs.getInt(DURATION),
@@ -168,7 +173,7 @@ public class MovieRepository implements Repository<Movie> {
         return Optional.empty();
     }
 
-
+    @Override
     public List<Movie> selectAll() throws Exception {
         List<Movie> movies = new ArrayList<>();
         DataSource dataSource = DataSourceSingleton.getInstance();
@@ -178,6 +183,7 @@ public class MovieRepository implements Repository<Movie> {
                 movies.add(new Movie(
                         rs.getInt(ID_MOVIE),
                         rs.getString(TITLE),
+                        LocalDateTime.parse(rs.getString(PUB_DATE), Movie.DATE_FORMATTER),
                         rs.getString(ORIGINAL_TITLE),
                         rs.getString(DESCRIPTION),
                         rs.getInt(DURATION),

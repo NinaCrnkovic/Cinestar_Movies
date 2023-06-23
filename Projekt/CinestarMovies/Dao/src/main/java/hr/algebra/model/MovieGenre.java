@@ -9,8 +9,24 @@ package hr.algebra.model;
  * @author Nina
  */
 public final class MovieGenre {
+
+    private int movieGenreId;
     private int movieId;
     private int genreId;
+
+    public int getMovieGenreId() {
+        return movieGenreId;
+    }
+
+    public void setMovieGenreId(int movieGenreId) {
+        this.movieGenreId = movieGenreId;
+    }
+
+    public MovieGenre(int movieGenreId, int movieId, int genreId) {
+        this(movieId, genreId);
+        this.movieGenreId = movieGenreId;
+
+    }
 
     public MovieGenre(int movieId, int genreId) {
         this.movieId = movieId;
@@ -32,7 +48,5 @@ public final class MovieGenre {
     public void setGenreId(int genreId) {
         this.genreId = genreId;
     }
-    
-    
-    
+
 }
