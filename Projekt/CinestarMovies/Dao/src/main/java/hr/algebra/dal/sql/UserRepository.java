@@ -22,7 +22,7 @@ import java.util.Optional;
  */
 public class UserRepository implements Repository<User> {
 
-    private static final String ID_USER = "IDUser";
+    private static final String ID_USER = "ID";
     private static final String USERNAME = "Username";
     private static final String PWD_HASH = "PwdHash";
     private static final String PWD_SALT = "PwdSalt";

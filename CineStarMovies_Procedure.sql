@@ -9,7 +9,7 @@ GO
 
 --------------------------Movie------------
 ----- CREATE PROCEDURE
-CREATE PROCEDURE CreateMovie
+CREATE or alter PROCEDURE CreateMovie
     @Title NVARCHAR(255),
 	@PubDate DATETIME,
     @OriginalTitle NVARCHAR(255),
@@ -17,30 +17,28 @@ CREATE PROCEDURE CreateMovie
     @Duration INT,
     @Year INT,
     @Poster NVARCHAR(MAX),
-    @Rating NVARCHAR(50),
     @Link NVARCHAR(MAX),
-    @Guid NVARCHAR(MAX),
     @Reservation NVARCHAR(MAX),
     @DisplayDate DATETIME,
     @Performances NVARCHAR(MAX),
-    @Sort INT,
     @Trailer NVARCHAR(255),
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
-    IF NOT EXISTS (SELECT * FROM Movie WHERE Title = @Title AND Year = @Year)
+    IF NOT EXISTS (SELECT * FROM Movie WHERE Title = @Title AND Year = @Year AND DisplayDate = @DisplayDate)
     BEGIN
-        INSERT INTO Movie(Title, PubDate, OriginalTitle, Description, Duration, Year, Poster, Rating, Link, Guid, Reservation, DisplayDate, Performances, Sort, Trailer)
-        VALUES (@Title,@PubDate, @OriginalTitle, @Description, @Duration, @Year, @Poster, @Rating, @Link, @Guid, @Reservation, @DisplayDate, @Performances, @Sort, @Trailer)
+        INSERT INTO Movie(Title, PubDate, OriginalTitle, Description, Duration, Year, Poster, Link, Reservation, DisplayDate, Performances, Trailer)
+        VALUES (@Title,@PubDate, @OriginalTitle, @Description, @Duration, @Year, @Poster, @Link, @Reservation, @DisplayDate, @Performances, @Trailer)
         
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM Movie WHERE Title = @Title AND Year = @Year
+        SELECT @ID = ID FROM Movie WHERE Title = @Title AND Year = @Year AND DisplayDate = @DisplayDate
     END
 END
 GO
+
 
 
 -- UPDATE PROCEDURE
@@ -53,13 +51,10 @@ CREATE PROCEDURE UpdateMovie
     @Duration INT,
     @Year INT,
     @Poster NVARCHAR(MAX),
-    @Rating NVARCHAR(50),
     @Link NVARCHAR(MAX),
-    @Guid NVARCHAR(MAX),
     @Reservation NVARCHAR(MAX),
     @DisplayDate DATETIME,
     @Performances NVARCHAR(MAX),
-    @Sort INT,
     @Trailer NVARCHAR(255)
 AS
 BEGIN
@@ -71,17 +66,15 @@ BEGIN
         Duration = @Duration,
         Year = @Year,
         Poster = @Poster,
-        Rating = @Rating,
         Link = @Link,
-        Guid = @Guid,
         Reservation = @Reservation,
         DisplayDate = @DisplayDate,
         Performances = @Performances,
-        Sort = @Sort,
         Trailer = @Trailer
     WHERE ID = @ID
 END
 GO
+
 
 -- DELETE PROCEDURE
 CREATE PROCEDURE DeleteMovie
@@ -113,9 +106,9 @@ GO
 ------------------------ Genre
 ----- CREATE PROCEDURE
 
-CREATE PROCEDURE CreateGenre
+CREATE or alter PROCEDURE CreateGenre
     @Name NVARCHAR(255),
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM Genre WHERE Name = @Name)
@@ -123,11 +116,11 @@ BEGIN
         INSERT INTO Genre(Name)
         VALUES (@Name)
 
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM Genre WHERE Name = @Name
+        SELECT @ID = ID FROM Genre WHERE Name = @Name
     END
 END
 GO
@@ -174,9 +167,9 @@ GO
 
 ----------------------------- Person
 ----- CREATE PROCEDURE
-CREATE PROCEDURE CreatePerson
+CREATE or alter PROCEDURE CreatePerson
     @Name NVARCHAR(255),
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM Person WHERE Name = @Name)
@@ -184,11 +177,11 @@ BEGIN
         INSERT INTO Person(Name)
         VALUES (@Name)
 
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM Person WHERE Name = @Name
+        SELECT @ID = ID FROM Person WHERE Name = @Name
     END
 END
 GO
@@ -230,9 +223,9 @@ GO
 
 ---------------------- Role
 ----- CREATE PROCEDURE
-CREATE PROCEDURE CreateRole
+CREATE or alter PROCEDURE CreateRole
     @Role NVARCHAR(255),
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM Role WHERE Role = @Role)
@@ -240,11 +233,11 @@ BEGIN
         INSERT INTO Role(Role)
         VALUES (@Role)
 
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM Role WHERE Role = @Role
+        SELECT @ID = ID FROM Role WHERE Role = @Role
     END
 END
 GO
@@ -290,10 +283,10 @@ GO
 
 ---------------------- MovieGenre
 ----- CREATE PROCEDURE
-CREATE PROCEDURE CreateMovieGenre
+CREATE or alter PROCEDURE CreateMovieGenre
     @MovieID INT,
     @GenreID INT,
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM MovieGenre WHERE MovieID = @MovieID AND GenreID = @GenreID)
@@ -301,11 +294,11 @@ BEGIN
         INSERT INTO MovieGenre(MovieID, GenreID)
         VALUES (@MovieID, @GenreID)
 
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM MovieGenre WHERE MovieID = @MovieID AND GenreID = @GenreID
+        SELECT @ID = ID FROM MovieGenre WHERE MovieID = @MovieID AND GenreID = @GenreID
     END
 END
 GO
@@ -351,11 +344,11 @@ GO
 
 ---------------------- MoviePersonRole
 ----- CREATE PROCEDURE
-CREATE PROCEDURE CreateMoviePersonRole
+CREATE or alter PROCEDURE CreateMoviePersonRole
     @MovieID INT,
     @PersonID INT,
     @RoleID INT,
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM MoviePersonRole WHERE MovieID = @MovieID AND PersonID = @PersonID AND RoleID = @RoleID)
@@ -363,11 +356,11 @@ BEGIN
         INSERT INTO MoviePersonRole(MovieID, PersonID, RoleID)
         VALUES (@MovieID, @PersonID, @RoleID)
 
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM MoviePersonRole WHERE MovieID = @MovieID AND PersonID = @PersonID AND RoleID = @RoleID
+        SELECT @ID = ID FROM MoviePersonRole WHERE MovieID = @MovieID AND PersonID = @PersonID AND RoleID = @RoleID
     END
 END
 GO
@@ -534,10 +527,10 @@ GO
 
 ---------------------- FavoriteMovie
 ----- CREATE PROCEDURE
-CREATE PROCEDURE CreateFavoriteMovie
+CREATE or alter PROCEDURE CreateFavoriteMovie
     @UserID INT,
     @MovieID INT,
-    @InsertedID INT OUTPUT
+    @ID INT OUTPUT
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM FavoriteMovie WHERE UserID = @UserID AND MovieID = @MovieID)
@@ -545,11 +538,11 @@ BEGIN
         INSERT INTO FavoriteMovie(UserID, MovieID)
         VALUES (@UserID, @MovieID)
 
-        SET @InsertedID = SCOPE_IDENTITY()
+        SET @ID = SCOPE_IDENTITY()
     END
     ELSE
     BEGIN
-        SELECT @InsertedID = ID FROM FavoriteMovie WHERE UserID = @UserID AND MovieID = @MovieID
+        SELECT @ID = ID FROM FavoriteMovie WHERE UserID = @UserID AND MovieID = @MovieID
     END
 END
 GO
@@ -591,3 +584,24 @@ BEGIN
     SELECT * FROM FavoriteMovie
 END
 GO
+
+CREATE PROCEDURE ClearTables
+AS
+BEGIN
+    -- Turn off constraint checking to prevent foreign key issues when deleting
+    EXEC sp_MSforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT all";
+
+    DELETE FROM FavoriteMovie;
+    DELETE FROM [User];
+    DELETE FROM MoviePersonRole;
+    DELETE FROM MovieGenre;
+    DELETE FROM Person;
+    DELETE FROM Movie;
+    DELETE FROM Genre;
+    
+    -- Turn constraint checking back on
+    EXEC sp_MSforeachtable "ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all";
+END;
+
+EXEC ClearTables
+-- Jun 23 2023 12:00PM

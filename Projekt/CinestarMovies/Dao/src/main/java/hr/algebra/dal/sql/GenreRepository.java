@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 public class GenreRepository implements Repository<Genre> {
 
-    private static final String ID_GENRE = "IDGenre";
+    private static final String ID_GENRE = "ID";
     private static final String NAME = "Name";
 
     private static final String CREATE_GENRE = "{ CALL CreateGenre (?,?) }";

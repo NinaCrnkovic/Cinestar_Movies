@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 public class PersonRepository implements Repository<Person> {
 
-    private static final String ID_PERSON = "IDPerson";
+    private static final String ID_PERSON = "ID";
     private static final String NAME = "Name";
 
     private static final String CREATE_PERSON = "{ CALL CreatePerson (?,?) }";

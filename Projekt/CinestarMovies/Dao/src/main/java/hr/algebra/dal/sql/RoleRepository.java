@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import javax.sql.DataSource;
 
-public class RoleRepostiory implements Repository<Role> {
+public class RoleRepository implements Repository<Role> {
 
-    private static final String ID_ROLE = "IDRole";
+    private static final String ID_ROLE = "ID";
     private static final String ROLE = "Role";
 
     private static final String CREATE_ROLE = "{ CALL CreateRole (?,?) }";

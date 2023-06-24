@@ -6,19 +6,16 @@ GO
 CREATE TABLE Movie (
     ID INT PRIMARY KEY IDENTITY,
     Title NVARCHAR(255),
-	PubDate DATETIME,
+	PubDate NVARCHAR(90),
     OriginalTitle NVARCHAR(255),
     Description NVARCHAR(MAX),
     Duration INT,
     Year INT,
     Poster NVARCHAR(MAX),
-    Rating NVARCHAR(50),
     Link NVARCHAR(MAX),
-    Guid NVARCHAR(MAX),
     Reservation NVARCHAR(MAX),
-    DisplayDate DATETIME,
+    DisplayDate NVARCHAR(90),
     Performances NVARCHAR(MAX),
-    Sort INT,
     Trailer NVARCHAR(255)
 );
 

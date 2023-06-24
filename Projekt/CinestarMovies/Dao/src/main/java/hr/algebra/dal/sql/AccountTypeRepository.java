@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 public class AccountTypeRepository implements Repository<AccountType> {
 
-    private static final String ID_ACCOUNT_TYPE = "IDAccountType";
+    private static final String ID_ACCOUNT_TYPE = "ID";
     private static final String TYPE = "Type";
 
     private static final String CREATE_ACCOUNT_TYPE = "{ CALL CreateAccountType (?,?) }";

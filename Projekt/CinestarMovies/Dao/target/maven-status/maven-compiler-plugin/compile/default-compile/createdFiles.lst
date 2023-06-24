@@ -2,7 +2,6 @@ hr\algebra\dal\sql\FavoriteMovieRepository.class
 hr\algebra\model\AccountType.class
 hr\algebra\dal\Repository.class
 hr\algebra\dal\sql\MovieRepository.class
-hr\algebra\dal\sql\RoleRepostiory.class
 hr\algebra\dal\sql\MoviePersonRoleRepository.class
 hr\algebra\model\Person.class
 hr\algebra\model\Article.class
@@ -12,6 +11,7 @@ hr\algebra\dal\sql\AccountTypeRepository.class
 hr\algebra\model\Genre.class
 hr\algebra\dal\RepositoryFactory.class
 hr\algebra\dal\sql\DataSourceSingleton.class
+hr\algebra\dal\sql\RoleRepository.class
 hr\algebra\dal\RepositoryFactory$RepoType.class
 hr\algebra\model\Movie.class
 hr\algebra\dal\sql\PersonRepository.class

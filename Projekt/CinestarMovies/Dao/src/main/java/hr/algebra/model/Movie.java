@@ -7,8 +7,9 @@ package hr.algebra.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
+import java.util.Locale;
 
 /**
  *
@@ -16,7 +17,9 @@ import java.util.List;
  */
 public final class Movie {
 
-    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    //public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("MMM dd yyyy hh:mma", Locale.ENGLISH);
+
 
     private int id;
     private String title;
@@ -26,23 +29,20 @@ public final class Movie {
     private int duration;
     private int year;
     private String poster;
-    private String rating;
     private String link;
-    private String guid;
     private String reservation;
     private LocalDateTime displayDate;
     private String performances;
-    private int sort;
     private String trailer;
     private List<Genre> genres;
     private List<Person> actors;
     private List<Person> directors;
 
-    
+    public Movie() {
 
-    
+    }
 
-    public Movie(String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String rating, String link, String guid, String reservation, LocalDateTime displayDate, String performances, int sort, String trailer) {
+    public Movie(String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String link, String reservation, LocalDateTime displayDate, String performances, String trailer) {
         this.title = title;
         this.pubDate = pubDate;
         this.originalTitle = originalTitle;
@@ -50,23 +50,27 @@ public final class Movie {
         this.duration = duration;
         this.year = year;
         this.poster = poster;
-        this.rating = rating;
         this.link = link;
-        this.guid = guid;
         this.reservation = reservation;
         this.displayDate = displayDate;
         this.performances = performances;
-        this.sort = sort;
         this.trailer = trailer;
     }
 
-    public Movie(int id, String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String rating, String link, String guid, String reservation, LocalDateTime displayDate, String performances, int sort, String trailer) {
-        this(title, pubDate, originalTitle, description, duration, year, poster, rating, link, guid, reservation, displayDate, performances, sort, trailer);
+    public Movie(int id, String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String link, String reservation, LocalDateTime displayDate, String performances, String trailer) {
+        this(title, pubDate, originalTitle, description, duration, year, poster, link, reservation, displayDate, performances, trailer);
         this.id = id;
-
+   
     }
 
-    
+    public Movie(int id, String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String link, String reservation, LocalDateTime displayDate, String performances, String trailer, List<Genre> genres, List<Person> actors, List<Person> directors) {
+        this(id, title, pubDate, originalTitle, description, duration, year, poster, link, reservation, displayDate, performances, trailer);
+        this.genres = genres;
+        this.actors = actors;
+        this.directors = directors;
+    }
+
+   
 
     public LocalDateTime getPubDate() {
         return pubDate;
@@ -75,6 +79,7 @@ public final class Movie {
     public void setPubDate(LocalDateTime pubDate) {
         this.pubDate = pubDate;
     }
+
     public int getId() {
         return id;
     }
@@ -131,28 +136,12 @@ public final class Movie {
         this.poster = poster;
     }
 
-    public String getRating() {
-        return rating;
-    }
-
-    public void setRating(String rating) {
-        this.rating = rating;
-    }
-
     public String getLink() {
         return link;
     }
 
     public void setLink(String link) {
         this.link = link;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
     }
 
     public String getReservation() {
@@ -179,14 +168,6 @@ public final class Movie {
         this.performances = performances;
     }
 
-    public int getSort() {
-        return sort;
-    }
-
-    public void setSort(int sort) {
-        this.sort = sort;
-    }
-
     public String getTrailer() {
         return trailer;
     }
@@ -194,9 +175,9 @@ public final class Movie {
     public void setTrailer(String trailer) {
         this.trailer = trailer;
     }
-    
+
     public List<Person> getActors() {
-        return actors;
+        return actors == null ? Collections.emptyList() : actors;
     }
 
     public void setActors(List<Person> actors) {
@@ -211,8 +192,9 @@ public final class Movie {
     }
 
     public List<Person> getDirectors() {
-        return directors;
+    return directors == null ? Collections.emptyList() : directors;
     }
+
 
     public void setDirectors(List<Person> directors) {
         this.directors = directors;
@@ -226,7 +208,7 @@ public final class Movie {
     }
 
     public List<Genre> getGenres() {
-        return genres;
+        return genres == null ? Collections.emptyList() : genres;
     }
 
     public void setGenres(List<Genre> genres) {
@@ -239,15 +221,10 @@ public final class Movie {
         }
         this.genres.add(genre);
     }
-    
 
     @Override
     public String toString() {
         return id + " - " + title;
     }
-
-   
-    
-    
 
 }

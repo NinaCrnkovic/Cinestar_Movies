@@ -1,24 +1,23 @@
 CineStar constants
 
 ----------------------Movie
-private static final String ID_MOVIE = "IDMovie";
-private static final String TITLE = "Title";
-private static final String ORIGINAL_TITLE = "OriginalTitle";
-private static final String DESCRIPTION = "Description";
-private static final String DURATION = "Duration";
-private static final String YEAR = "Year";
-private static final String POSTER = "Poster";
-private static final String RATING = "Rating";
-private static final String LINK = "Link";
-private static final String GUID = "Guid";
-private static final String RESERVATION = "Reservation";
-private static final String DISPLAY_DATE = "DisplayDate";
-private static final String PERFORMANCES = "Performances";
-private static final String SORT = "Sort";
-private static final String TRAILER = "Trailer";
+private static final String ID_MOVIE = "ID"
+public static final String TITLE = "Title";
+public static final String PUB_DATE = "PubDate";
+public static final String ORIGINAL_TITLE = "OriginalTitle";
+public static final String DESCRIPTION = "Description";
+public static final String DURATION = "Duration";
+public static final String YEAR = "Year";
+public static final String POSTER = "Poster";
+public static final String LINK = "Link";
+public static final String RESERVATION = "Reservation";
+public static final String DISPLAY_DATE = "DisplayDate";
+public static final String PERFORMANCES = "Performances";
+public static final String TRAILER = "Trailer";
 
-private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
-private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+
+private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?) }";
+private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?) }";
 private static final String DELETE_MOVIE = "{ CALL DeleteMovie (?) }";
 private static final String SELECT_MOVIE = "{ CALL SelectMovie (?) }";
 private static final String SELECT_MOVIES = "{ CALL SelectMovies }";

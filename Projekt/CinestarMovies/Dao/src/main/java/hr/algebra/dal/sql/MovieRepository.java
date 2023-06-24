@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package hr.algebra.dal.sql;
+
 import hr.algebra.dal.Repository;
 import hr.algebra.model.Movie;
 import java.sql.CallableStatement;
@@ -20,31 +21,25 @@ import javax.sql.DataSource;
  * @author Nina
  */
 public class MovieRepository implements Repository<Movie> {
+    private static final String ID_MOVIE = "ID";
+    public static final String TITLE = "Title";
+    public static final String PUB_DATE = "PubDate";
+    public static final String ORIGINAL_TITLE = "OriginalTitle";
+    public static final String DESCRIPTION = "Description";
+    public static final String DURATION = "Duration";
+    public static final String YEAR = "Year";
+    public static final String POSTER = "Poster";
+    public static final String LINK = "Link";
+    public static final String RESERVATION = "Reservation";
+    public static final String DISPLAY_DATE = "DisplayDate";
+    public static final String PERFORMANCES = "Performances";
+    public static final String TRAILER = "Trailer";
 
-    private static final String ID_MOVIE = "IDMovie";
-    private static final String TITLE = "Title";
-    private static final String PUB_DATE = "PubDate";
-    private static final String ORIGINAL_TITLE = "OriginalTitle";
-    private static final String DESCRIPTION = "Description";
-    private static final String DURATION = "Duration";
-    private static final String YEAR = "Year";
-    private static final String POSTER = "Poster";
-    private static final String RATING = "Rating";
-    private static final String LINK = "Link";
-    private static final String GUID = "Guid";
-    private static final String RESERVATION = "Reservation";
-    private static final String DISPLAY_DATE = "DisplayDate";
-    private static final String PERFORMANCES = "Performances";
-    private static final String SORT = "Sort";
-    private static final String TRAILER = "Trailer";
-
-    private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
-    private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+    private static final String CREATE_MOVIE = "{ CALL CreateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?) }";
+    private static final String UPDATE_MOVIE = "{ CALL UpdateMovie (?,?,?,?,?,?,?,?,?,?,?,?,?) }";
     private static final String DELETE_MOVIE = "{ CALL DeleteMovie (?) }";
     private static final String SELECT_MOVIE = "{ CALL SelectMovie (?) }";
     private static final String SELECT_MOVIES = "{ CALL SelectMovies }";
-
-   
 
     @Override
     public int create(Movie movie) throws Exception {
@@ -58,13 +53,10 @@ public class MovieRepository implements Repository<Movie> {
             stmt.setInt(DURATION, movie.getDuration());
             stmt.setInt(YEAR, movie.getYear());
             stmt.setString(POSTER, movie.getPoster());
-            stmt.setString(RATING, movie.getRating());
             stmt.setString(LINK, movie.getLink());
-            stmt.setString(GUID, movie.getGuid());
             stmt.setString(RESERVATION, movie.getReservation());
             stmt.setString(DISPLAY_DATE, movie.getDisplayDate().format(Movie.DATE_FORMATTER));
             stmt.setString(PERFORMANCES, movie.getPerformances());
-            stmt.setInt(SORT, movie.getSort());
             stmt.setString(TRAILER, movie.getTrailer());
             stmt.registerOutParameter(ID_MOVIE, Types.INTEGER);
 
@@ -72,10 +64,9 @@ public class MovieRepository implements Repository<Movie> {
             return stmt.getInt(ID_MOVIE);
         }
     }
-    
-    
+
     @Override
-   public void createManny(List<Movie> movies) throws Exception {
+    public void createManny(List<Movie> movies) throws Exception {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_MOVIE)) {
 
@@ -87,13 +78,10 @@ public class MovieRepository implements Repository<Movie> {
                 stmt.setInt(DURATION, movie.getDuration());
                 stmt.setInt(YEAR, movie.getYear());
                 stmt.setString(POSTER, movie.getPoster());
-                stmt.setString(RATING, movie.getRating());
                 stmt.setString(LINK, movie.getLink());
-                stmt.setString(GUID, movie.getGuid());
                 stmt.setString(RESERVATION, movie.getReservation());
                 stmt.setString(DISPLAY_DATE, movie.getDisplayDate().format(Movie.DATE_FORMATTER));
                 stmt.setString(PERFORMANCES, movie.getPerformances());
-                stmt.setInt(SORT, movie.getSort());
                 stmt.setString(TRAILER, movie.getTrailer());
                 stmt.registerOutParameter(ID_MOVIE, Types.INTEGER);
 
@@ -101,8 +89,6 @@ public class MovieRepository implements Repository<Movie> {
             }
         }
     }
-
-   
 
     @Override
     public void update(int id, Movie movie) throws Exception {
@@ -116,13 +102,10 @@ public class MovieRepository implements Repository<Movie> {
             stmt.setInt(DURATION, movie.getDuration());
             stmt.setInt(YEAR, movie.getYear());
             stmt.setString(POSTER, movie.getPoster());
-            stmt.setString(RATING, movie.getRating());
             stmt.setString(LINK, movie.getLink());
-            stmt.setString(GUID, movie.getGuid());
             stmt.setString(RESERVATION, movie.getReservation());
             stmt.setString(DISPLAY_DATE, movie.getDisplayDate().format(Movie.DATE_FORMATTER));
             stmt.setString(PERFORMANCES, movie.getPerformances());
-            stmt.setInt(SORT, movie.getSort());
             stmt.setString(TRAILER, movie.getTrailer());
             stmt.setInt(ID_MOVIE, id);
 
@@ -159,13 +142,10 @@ public class MovieRepository implements Repository<Movie> {
                             rs.getInt(DURATION),
                             rs.getInt(YEAR),
                             rs.getString(POSTER),
-                            rs.getString(RATING),
                             rs.getString(LINK),
-                            rs.getString(GUID),
                             rs.getString(RESERVATION),
                             LocalDateTime.parse(rs.getString(DISPLAY_DATE), Movie.DATE_FORMATTER),
                             rs.getString(PERFORMANCES),
-                            rs.getInt(SORT),
                             rs.getString(TRAILER)));
                 }
             }
@@ -189,13 +169,10 @@ public class MovieRepository implements Repository<Movie> {
                         rs.getInt(DURATION),
                         rs.getInt(YEAR),
                         rs.getString(POSTER),
-                        rs.getString(RATING),
                         rs.getString(LINK),
-                        rs.getString(GUID),
                         rs.getString(RESERVATION),
                         LocalDateTime.parse(rs.getString(DISPLAY_DATE), Movie.DATE_FORMATTER),
                         rs.getString(PERFORMANCES),
-                        rs.getInt(SORT),
                         rs.getString(TRAILER)));
             }
         }

@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
 public class MovieTableModel extends AbstractTableModel {
 
     private static final String[] COLUMN_NAMES = {"Id", "Title", "PubDate", "Original tile", "Description",
-        "Directors", "Actors", "Duration", "Genre", "Year", "Poster", "Rating", "Link", "Guid",
-        "Reservation", "Display date", "Perormaces", "Sort", "Trailer"};
+        "Directors", "Actors", "Duration", "Genre", "Year", "Poster", "Link",
+        "Reservation", "Display date", "Perormaces", "Trailer"};
 
     private List<Movie> movies;
 
@@ -80,28 +80,22 @@ public class MovieTableModel extends AbstractTableModel {
             case 10 -> {
                 return movie.getPoster();
             }
+            
             case 11 -> {
-                return movie.getRating();
-            }
-            case 12 -> {
                 return movie.getLink();
             }
-            case 13 -> {
-                return movie.getGuid();
-            }
-            case 14 -> {
+            
+            case 12 -> {
                 return movie.getReservation();
             }
-            case 15 -> {
+            case 13 -> {
                 return movie.getDisplayDate();
             }
-            case 16 -> {
+            case 14 -> {
                 return movie.getPerformances();
             }
-            case 17 -> {
-                return movie.getSort();
-            }
-            case 18 -> {
+            
+            case 15 -> {
                 return movie.getTrailer();
             }
             default ->
