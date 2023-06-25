@@ -20,7 +20,7 @@ public final class RepositoryFactory {
     private static final Properties properties = new Properties();
     private static final String PATH = "/config/repository.properties";
     private static final Map<RepoType, Repository> repositories = new HashMap<>();
-   
+    private static final Map<SqlRepoType, SQLRepository> sqlRepositories = new HashMap<>();
 
     static {
         try (InputStream is = RepositoryFactory.class.getResourceAsStream(PATH)) {
@@ -35,6 +35,15 @@ public final class RepositoryFactory {
                 repositories.put(type, repository);
             }
 
+            for (SqlRepoType type : SqlRepoType.values()) {
+                String className = properties.getProperty(type.name());
+                SQLRepository sqlRepository = (SQLRepository) Class
+                        .forName(className)
+                        .getDeclaredConstructor()
+                        .newInstance();
+                sqlRepositories.put(type, sqlRepository);
+            }
+
         } catch (Exception ex) {
             Logger.getLogger(RepositoryFactory.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -44,8 +53,11 @@ public final class RepositoryFactory {
         return repositories.get(type);
     }
 
+    public static SQLRepository getSqlRepository(SqlRepoType type) {
+        return sqlRepositories.get(type);
+    }
+
     public enum RepoType {
-        CLASS_NAME,
         ACCOUNT_TYPE,
         FAVORITE_MOVIE,
         GENRE,
@@ -57,4 +69,8 @@ public final class RepositoryFactory {
         USER
     }
 
+    public enum SqlRepoType {
+        DATABASE
+        
+    }
 }

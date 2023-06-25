@@ -47,7 +47,7 @@ public class MovieRepository implements Repository<Movie> {
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(CREATE_MOVIE)) {
 
             stmt.setString(TITLE, movie.getTitle());
-            stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_FORMATTER));
+            stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_TIME_FORMATTER));
             stmt.setString(ORIGINAL_TITLE, movie.getOriginalTitle());
             stmt.setString(DESCRIPTION, movie.getDescription());
             stmt.setInt(DURATION, movie.getDuration());
@@ -72,7 +72,7 @@ public class MovieRepository implements Repository<Movie> {
 
             for (Movie movie : movies) {
                 stmt.setString(TITLE, movie.getTitle());
-                stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_FORMATTER));
+                stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_TIME_FORMATTER));
                 stmt.setString(ORIGINAL_TITLE, movie.getOriginalTitle());
                 stmt.setString(DESCRIPTION, movie.getDescription());
                 stmt.setInt(DURATION, movie.getDuration());
@@ -96,7 +96,7 @@ public class MovieRepository implements Repository<Movie> {
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(UPDATE_MOVIE)) {
 
             stmt.setString(TITLE, movie.getTitle());
-            stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_FORMATTER));
+            stmt.setString(PUB_DATE, movie.getPubDate().format(Movie.DATE_TIME_FORMATTER));
             stmt.setString(ORIGINAL_TITLE, movie.getOriginalTitle());
             stmt.setString(DESCRIPTION, movie.getDescription());
             stmt.setInt(DURATION, movie.getDuration());
@@ -136,7 +136,7 @@ public class MovieRepository implements Repository<Movie> {
                     return Optional.of(new Movie(
                             rs.getInt(ID_MOVIE),
                             rs.getString(TITLE),
-                            LocalDateTime.parse(rs.getString(PUB_DATE), Movie.DATE_FORMATTER),
+                            LocalDateTime.parse(rs.getString(PUB_DATE), Movie.DATE_TIME_FORMATTER),
                             rs.getString(ORIGINAL_TITLE),
                             rs.getString(DESCRIPTION),
                             rs.getInt(DURATION),
@@ -163,7 +163,7 @@ public class MovieRepository implements Repository<Movie> {
                 movies.add(new Movie(
                         rs.getInt(ID_MOVIE),
                         rs.getString(TITLE),
-                        LocalDateTime.parse(rs.getString(PUB_DATE), Movie.DATE_FORMATTER),
+                        LocalDateTime.parse(rs.getString(PUB_DATE), Movie.DATE_TIME_FORMATTER),
                         rs.getString(ORIGINAL_TITLE),
                         rs.getString(DESCRIPTION),
                         rs.getInt(DURATION),

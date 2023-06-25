@@ -13,6 +13,10 @@ public final class Genre {
     private int id;
     private String name;
 
+    public Genre() {
+    }
+
+    
     public Genre(String name) {
         this.name = name;
     }
@@ -37,6 +41,11 @@ public final class Genre {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Override
+    public String toString() {
+        return name;
     }
 
 }

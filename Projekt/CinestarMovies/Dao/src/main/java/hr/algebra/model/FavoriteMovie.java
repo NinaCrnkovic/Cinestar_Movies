@@ -15,6 +15,9 @@ public final class FavoriteMovie {
     private int movieId;
     private int userId;
 
+    public FavoriteMovie() {
+    }
+
     public FavoriteMovie(int movieId, int userId) {
         this.movieId = movieId;
         this.userId = userId;

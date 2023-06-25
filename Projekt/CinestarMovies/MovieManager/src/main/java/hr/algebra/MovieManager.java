@@ -4,8 +4,13 @@
  */
 package hr.algebra;
 
+import hr.algebra.utilities.MessageUtils;
 import hr.algebra.view.EditMoviesPanel;
+import hr.algebra.view.FavoriteMoviesPanel;
+import hr.algebra.view.LoginPanel;
+import hr.algebra.view.RegisterPanel;
 import hr.algebra.view.UploadMoviesPanel;
+
 
 /**
  *
@@ -13,8 +18,11 @@ import hr.algebra.view.UploadMoviesPanel;
  */
 public class MovieManager extends javax.swing.JFrame {
 
-    private static final String UPLOAD_MOVIES = "Upload movies";
+    private static final String UPLOAD_MOVIES = "Admmin";
     private static final String EDIT_MOVIES = "Edit movies";
+    private static final String LOGIN = "Login";
+    private static final String REGISTER = "Register";
+    private static final String FAVORITE_MOVIES = "Favorite movies";
 
     /**
      * Creates new form ArticleManager
@@ -34,14 +42,61 @@ public class MovieManager extends javax.swing.JFrame {
     private void initComponents() {
 
         tpContent = new javax.swing.JTabbedPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuAplication = new javax.swing.JMenu();
+        menuLogout = new javax.swing.JMenuItem();
+        menuExit = new javax.swing.JMenuItem();
+        menuHelp = new javax.swing.JMenu();
+        menuAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1600, 1200));
+        setMinimumSize(new java.awt.Dimension(1800, 1200));
 
-        tpContent.setBackground(new java.awt.Color(0, 102, 255));
+        tpContent.setBackground(new java.awt.Color(23, 21, 23));
         tpContent.setMaximumSize(new java.awt.Dimension(1700, 1100));
         tpContent.setMinimumSize(new java.awt.Dimension(1700, 1000));
         tpContent.setName(""); // NOI18N
+
+        menuAplication.setMnemonic('C');
+        menuAplication.setText("CineStar");
+        menuAplication.setActionCommand("MovieApp");
+
+        menuLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuLogout.setText("Logout");
+        menuLogout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuLogoutActionPerformed(evt);
+            }
+        });
+        menuAplication.add(menuLogout);
+
+        menuExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuExit.setText("Exit");
+        menuExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuExitActionPerformed(evt);
+            }
+        });
+        menuAplication.add(menuExit);
+
+        jMenuBar1.add(menuAplication);
+
+        menuHelp.setMnemonic('H');
+        menuHelp.setText("Help");
+        menuHelp.setToolTipText("");
+
+        menuAbout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        menuAbout.setText("About");
+        menuAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAboutActionPerformed(evt);
+            }
+        });
+        menuHelp.add(menuAbout);
+
+        jMenuBar1.add(menuHelp);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -49,20 +104,32 @@ public class MovieManager extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tpContent, javax.swing.GroupLayout.DEFAULT_SIZE, 1700, Short.MAX_VALUE)
+                .addComponent(tpContent, javax.swing.GroupLayout.DEFAULT_SIZE, 1788, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tpContent, javax.swing.GroupLayout.DEFAULT_SIZE, 1100, Short.MAX_VALUE)
+                .addComponent(tpContent, javax.swing.GroupLayout.DEFAULT_SIZE, 1157, Short.MAX_VALUE)
                 .addGap(14, 14, 14))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAboutActionPerformed
+        MessageUtils.showInformationMessage("Info", "CineStar Movie App 1.0");
+    }//GEN-LAST:event_menuAboutActionPerformed
+
+    private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
+       
+    }//GEN-LAST:event_menuLogoutActionPerformed
+
+    private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
+        dispose();
+    }//GEN-LAST:event_menuExitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -101,11 +168,20 @@ public class MovieManager extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem menuAbout;
+    private javax.swing.JMenu menuAplication;
+    private javax.swing.JMenuItem menuExit;
+    private javax.swing.JMenu menuHelp;
+    private javax.swing.JMenuItem menuLogout;
     private javax.swing.JTabbedPane tpContent;
     // End of variables declaration//GEN-END:variables
 
     private void configurePanels() {
-        //tpContent.add(UPLOAD_MOVIES, new UploadMoviesPanel());
+        tpContent.add(LOGIN, new LoginPanel());
+        tpContent.add(REGISTER, new RegisterPanel());
+        tpContent.add(UPLOAD_MOVIES, new UploadMoviesPanel());
         tpContent.add(EDIT_MOVIES, new EditMoviesPanel());
+        tpContent.add(FAVORITE_MOVIES, new FavoriteMoviesPanel());
     }
 }

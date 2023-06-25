@@ -11,12 +11,14 @@ hr\algebra\dal\sql\AccountTypeRepository.class
 hr\algebra\model\Genre.class
 hr\algebra\dal\RepositoryFactory.class
 hr\algebra\dal\sql\DataSourceSingleton.class
+hr\algebra\dal\SQLRepository.class
 hr\algebra\dal\sql\RoleRepository.class
 hr\algebra\dal\RepositoryFactory$RepoType.class
 hr\algebra\model\Movie.class
 hr\algebra\dal\sql\PersonRepository.class
 hr\algebra\dal\sql\SqlRepository.class
 hr\algebra\dal\sql\MovieGenreRepository.class
+hr\algebra\dal\RepositoryFactory$SqlRepoType.class
 hr\algebra\dal\sql\UserRepository.class
 hr\algebra\model\User.class
 hr\algebra\model\Role.class

@@ -11,7 +11,7 @@ GO
 ----- CREATE PROCEDURE
 CREATE or alter PROCEDURE CreateMovie
     @Title NVARCHAR(255),
-	@PubDate DATETIME,
+	@PubDate NVARCHAR(90),
     @OriginalTitle NVARCHAR(255),
     @Description NVARCHAR(MAX),
     @Duration INT,
@@ -19,7 +19,7 @@ CREATE or alter PROCEDURE CreateMovie
     @Poster NVARCHAR(MAX),
     @Link NVARCHAR(MAX),
     @Reservation NVARCHAR(MAX),
-    @DisplayDate DATETIME,
+    @DisplayDate NVARCHAR(90),
     @Performances NVARCHAR(MAX),
     @Trailer NVARCHAR(255),
     @ID INT OUTPUT
@@ -42,9 +42,9 @@ GO
 
 
 -- UPDATE PROCEDURE
-CREATE PROCEDURE UpdateMovie
+CREATE or alter PROCEDURE UpdateMovie
     @ID INT,
-	@PubDate DATETIME,
+	@PubDate NVARCHAR(90),
     @Title NVARCHAR(255),
     @OriginalTitle NVARCHAR(255),
     @Description NVARCHAR(MAX),
@@ -53,7 +53,7 @@ CREATE PROCEDURE UpdateMovie
     @Poster NVARCHAR(MAX),
     @Link NVARCHAR(MAX),
     @Reservation NVARCHAR(MAX),
-    @DisplayDate DATETIME,
+    @DisplayDate NVARCHAR(90),
     @Performances NVARCHAR(MAX),
     @Trailer NVARCHAR(255)
 AS
@@ -77,14 +77,26 @@ GO
 
 
 -- DELETE PROCEDURE
-CREATE PROCEDURE DeleteMovie
+CREATE or alter PROCEDURE DeleteMovie
     @ID INT
 AS
 BEGIN
+    -- Delete rows in referencing tables first
+    DELETE FROM MovieGenre
+    WHERE MovieID = @ID;
+
+    DELETE FROM MoviePersonRole
+    WHERE MovieID = @ID;
+
+    DELETE FROM FavoriteMovie
+    WHERE MovieID = @ID;
+
+    -- Then delete the movie
     DELETE FROM Movie
-    WHERE ID = @ID
+    WHERE ID = @ID;
 END
 GO
+
 
 -- SELECT PROCEDURE
 CREATE PROCEDURE SelectMovie
@@ -317,11 +329,11 @@ END
 GO
 
 ----- DELETE PROCEDURE
-CREATE PROCEDURE DeleteMovieGenre
+CREATE or alter PROCEDURE DeleteMovieGenre
     @ID INT
 AS
 BEGIN
-    DELETE FROM MovieGenre WHERE ID = @ID
+    DELETE FROM MovieGenre WHERE MovieID = @ID
 END
 GO
 
@@ -380,11 +392,11 @@ END
 GO
 
 ----- DELETE PROCEDURE
-CREATE PROCEDURE DeleteMoviePersonRole
+CREATE or alter PROCEDURE DeleteMoviePersonRole
     @ID INT
 AS
 BEGIN
-    DELETE FROM MoviePersonRole WHERE ID = @ID
+    DELETE FROM MoviePersonRole WHERE MovieID = @ID
 END
 GO
 
@@ -585,14 +597,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE ClearTables
+CREATE or alter PROCEDURE ClearTables
 AS
 BEGIN
     -- Turn off constraint checking to prevent foreign key issues when deleting
     EXEC sp_MSforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT all";
 
     DELETE FROM FavoriteMovie;
-    DELETE FROM [User];
     DELETE FROM MoviePersonRole;
     DELETE FROM MovieGenre;
     DELETE FROM Person;

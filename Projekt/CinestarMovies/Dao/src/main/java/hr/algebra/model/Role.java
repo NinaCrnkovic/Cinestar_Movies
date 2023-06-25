@@ -13,6 +13,10 @@ public final class Role {
     private int id;
     private String role;
 
+    public Role() {
+    }
+
+    
     public Role(int id, String role) {
         this(role);
         this.id = id;
@@ -37,6 +41,11 @@ public final class Role {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return  role;
     }
     
 }

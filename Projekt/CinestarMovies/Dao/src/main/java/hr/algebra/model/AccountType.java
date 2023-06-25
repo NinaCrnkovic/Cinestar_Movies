@@ -13,6 +13,9 @@ public final class AccountType {
     private int id;
     private String type;
 
+    public AccountType() {
+    }
+
     public AccountType(String type) {
         this.type = type;
     }
@@ -37,6 +40,11 @@ public final class AccountType {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return type;
     }
 
 

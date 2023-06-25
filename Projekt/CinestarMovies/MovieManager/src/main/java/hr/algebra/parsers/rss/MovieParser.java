@@ -6,33 +6,38 @@ package hr.algebra.parsers.rss;
 
 import hr.algebra.factory.ParserFactory;
 import hr.algebra.factory.UrlConnectionFactory;
+import hr.algebra.model.Genre;
 import hr.algebra.model.Movie;
+import hr.algebra.model.Person;
 import hr.algebra.utilities.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.namespace.QName;
+import java.util.stream.Collectors;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 public class MovieParser {
 
-    private static final String RSS_URL = "https://www.blitz-cinestar.hr/feed";
-    private static final String ATTRIBUTE_URL = "url";
+    private static final String RSS_URL = "https://www.blitz-cinestar-bh.ba/rss.aspx?id=2682";
+    //private static final String ATTRIBUTE_URL = "url";
     private static final String EXT = ".jpg";
     private static final String DIR = "assets";
 
@@ -68,28 +73,100 @@ public class MovieParser {
                                         movie.setTitle(data);
                                     }
                                 }
-                                case LINK, GUID -> {
+                                case LINK -> {
                                     if (!data.isEmpty()) {
                                         movie.setLink(data);
                                     }
                                 }
                                 case DESCRIPTION -> {
                                     if (!data.isEmpty()) {
-                                        movie.setDescription(data);
+                                        Document document = Jsoup.parse(data);
+                                        String description = document.text();
+                                        movie.setDescription(description);
                                     }
                                 }
                                 case PLAKAT -> {
-                                    if (startElement != null && movie.getPoster() == null) {
+                                    if (!data.isEmpty() && startElement != null && movie.getPoster() == null) {
                                         handlePicture(movie, data);
                                     }
+
                                 }
-                                case PUB_DATE, DATUMPRIKAZIVANJA -> {
+                                case PUB_DATE -> {
                                     if (!data.isEmpty()) {
                                         LocalDateTime publishedDate = LocalDateTime.parse(data, DateTimeFormatter.RFC_1123_DATE_TIME);
+
                                         movie.setPubDate(publishedDate);
                                     }
                                 }
-                                // Add other cases for the rest of the movie information
+//                                case DATUMPRIKAZIVANJA -> {
+//                                    if (!data.isEmpty()) {
+//                                        //LocalDateTime publishedDate = LocalDateTime.parse(data, DateTimeFormatter.RFC_1123_DATE_TIME);
+//                                        LocalDateTime publishedDate = LocalDateTime.parse("2023-12-12T12:12:12");
+//                                        movie.setDisplayDate(publishedDate);
+//                                    }
+//                                }
+                                case DATUMPRIKAZIVANJA -> {
+                                    if (!data.isEmpty()) {
+                                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+                                        LocalDate date = LocalDate.parse(data, formatter);
+                                        LocalDateTime publishedDate = date.atStartOfDay();
+
+                                        movie.setDisplayDate(publishedDate);
+                                    }
+                                }
+
+                                case ORIGNAZIV -> {
+                                    if (!data.isEmpty()) {
+                                        movie.setOriginalTitle(data);
+                                    }
+                                }
+                                case TRAJANJE -> {
+                                    if (!data.isEmpty()) {
+                                        movie.setDuration(Integer.parseInt(data));
+                                    }
+                                }
+                                case GODINA -> {
+                                    if (!data.isEmpty()) {
+                                        movie.setYear(Integer.parseInt(data));
+                                    }
+                                }
+                                case PREDSTAVE -> {
+                                    if (!data.isEmpty()) {
+                                        movie.setPerformances(data);
+                                    }
+                                }
+                                case TRAILER -> {
+                                    if (!data.isEmpty()) {
+                                        movie.setTrailer(data);
+                                    }
+                                }
+                                case REZERVACIJA -> {
+                                    if (!data.isEmpty()) {
+                                        movie.setReservation(data);
+                                    }
+                                }
+                                case ZANR -> {
+                                    if (!data.isEmpty()) {
+                                        List<Genre> genres = handleGenre(data);
+                                        movie.setGenres(genres);
+
+                                    }
+                                }
+                                case GLUMCI -> {
+                                    if (!data.isEmpty()) {
+                                        List<Person> actors = handlePerson(data);
+                                        movie.setActors(actors);
+
+                                    }
+                                }
+                                case REDATELJ -> {
+                                    if (!data.isEmpty()) {
+                                        List<Person> directors = handlePerson(data);
+                                        movie.setDirectors(directors);
+
+                                    }
+                                }
+
                             }
                         }
                     }
@@ -101,7 +178,7 @@ public class MovieParser {
     }
 
     private static void handlePicture(Movie movie, String pictureUrl) {
-        // if picture is not ok, we must continue!!!
+
         try {
             String ext = pictureUrl.substring(pictureUrl.lastIndexOf("."));
             if (ext.length() > 4) {
@@ -111,25 +188,45 @@ public class MovieParser {
             String localPicturePath = DIR + File.separator + pictureName;
 
             FileUtils.copyFromUrl(pictureUrl, localPicturePath);
-            // put breakpoint
+
             movie.setPoster(localPicturePath);
         } catch (IOException ex) {
             Logger.getLogger(MovieParser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    private static List<Genre> handleGenre(String data) {
+        return Arrays.stream(data.split(","))
+                .map(String::trim)
+                .map(Genre::new)
+                .collect(Collectors.toList());
+    }
+
+    private static List<Person> handlePerson(String data) {
+        return Arrays.stream(data.split(","))
+                .map(String::trim)
+                .map(Person::new)
+                .collect(Collectors.toList());
+    }
+
     private enum TagType {
 
         ITEM("item"),
         TITLE("title"),
-        LINK("link"),
+        PUB_DATE("pubDate"),
+        ORIGNAZIV("orignaziv"),
         DESCRIPTION("description"),
+        TRAJANJE("trajanje"),
+        GODINA("godina"),
         PLAKAT("plakat"),
-        GUID("guid"),
+        LINK("link"),
+        REZERVACIJA("rezervacija"),
         DATUMPRIKAZIVANJA("datumprikazivanja"),
-        PUB_DATE("pubDate");
-
-        // Include all the other tags that you need
+        PREDSTAVE("predstave"),
+        TRAILER("trailer"),
+        REDATELJ("redatelj"),
+        GLUMCI("glumci"),
+        ZANR("zanr");
 
         private final String name;
 
@@ -147,4 +244,3 @@ public class MovieParser {
         }
     }
 }
-

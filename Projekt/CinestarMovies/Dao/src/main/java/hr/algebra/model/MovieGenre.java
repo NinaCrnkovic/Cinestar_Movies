@@ -14,6 +14,11 @@ public final class MovieGenre {
     private int movieId;
     private int genreId;
 
+    public MovieGenre() {
+    }
+
+    
+    
     public int getMovieGenreId() {
         return movieGenreId;
     }

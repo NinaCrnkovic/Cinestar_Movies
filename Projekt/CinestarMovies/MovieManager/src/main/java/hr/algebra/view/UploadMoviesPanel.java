@@ -6,20 +6,25 @@ package hr.algebra.view;
 
 import hr.algebra.dal.Repository;
 import hr.algebra.dal.RepositoryFactory;
+import hr.algebra.dal.SQLRepository;
+import hr.algebra.model.Genre;
 import hr.algebra.model.Movie;
+import hr.algebra.model.MovieGenre;
+import hr.algebra.model.MoviePersonRole;
+import hr.algebra.model.Person;
 
 import hr.algebra.parsers.rss.MovieParser;
 import hr.algebra.utilities.MessageUtils;
+import java.io.File;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 
-
 /**
  *
- * @author daniel.bele
+ * @author Nina
  */
 public class UploadMoviesPanel extends javax.swing.JPanel {
 
@@ -42,15 +47,23 @@ public class UploadMoviesPanel extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         lsMovies = new javax.swing.JList<>();
         btnUploadMovies = new javax.swing.JButton();
+        btnClearDatabase = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(23, 21, 23));
         addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
                 formComponentShown(evt);
             }
         });
 
+        lsMovies.setBackground(new java.awt.Color(51, 51, 51));
+        lsMovies.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPane1.setViewportView(lsMovies);
 
+        btnUploadMovies.setBackground(new java.awt.Color(0, 102, 204));
+        btnUploadMovies.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnUploadMovies.setForeground(new java.awt.Color(255, 255, 255));
         btnUploadMovies.setText("Upload Movies");
         btnUploadMovies.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -58,34 +71,89 @@ public class UploadMoviesPanel extends javax.swing.JPanel {
             }
         });
 
+        btnClearDatabase.setBackground(new java.awt.Color(0, 102, 204));
+        btnClearDatabase.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClearDatabase.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearDatabase.setText("Clear Database");
+        btnClearDatabase.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearDatabaseActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Cinestar-logo.jpg"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnUploadMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addGap(62, 62, 62)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnUploadMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnClearDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1))
+                .addGap(83, 83, 83))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnUploadMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1096, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnUploadMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnClearDatabase, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(17, 17, 17))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUploadMoviesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUploadMoviesActionPerformed
         try {
-            List<Movie> movies = MovieParser.parse();
-            repository.create(movies);
+            List<Movie> uploadedMovies = MovieParser.parse();
+            movieRepository.createManny(uploadedMovies);
+            List<Movie> movies = movieRepository.selectAll();
+
+            for (Movie movie : movies) {
+                for (Movie uploadMovie : uploadedMovies) {
+                    if (movie.getTitle().equals(uploadMovie.getTitle())) {
+                        movie.setGenres(uploadMovie.getGenres());
+                        movie.setActors(uploadMovie.getActors());
+                        movie.setDirectors(uploadMovie.getDirectors());
+
+                    }
+                }
+            }
+
+            for (Movie movie : movies) {
+
+                for (Person actor : movie.getActors()) {
+                    int actorId = personRepository.create(actor);
+                    MoviePersonRole moviePersonRole = new MoviePersonRole(movie.getId(), actorId, 1);
+                    moviePersonRoleRepository.create(moviePersonRole);
+                }
+                for (Person director : movie.getDirectors()) {
+                    int directorId = personRepository.create(director);
+                    MoviePersonRole moviePersonRole = new MoviePersonRole(movie.getId(), directorId, 2);
+                    moviePersonRoleRepository.create(moviePersonRole);
+                }
+                for (Genre genre : movie.getGenres()) {
+                    int genreId = genreRepository.create(genre);
+                    MovieGenre movieGenre = new MovieGenre(movie.getId(), genreId);
+                    movieGenreRepository.create(movieGenre);
+                }
+
+            }
+
             loadModel();
-            
+
         } catch (Exception ex) {
             MessageUtils.showErrorMessage("Unrecoverable error", "Unable to upload movies");
             System.exit(1);
@@ -96,19 +164,42 @@ public class UploadMoviesPanel extends javax.swing.JPanel {
         init();
     }//GEN-LAST:event_formComponentShown
 
+    private void btnClearDatabaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearDatabaseActionPerformed
+        sqlRepository.clearDatabase();
+        try {
+            loadModel();
+        } catch (Exception ex) {
+            Logger.getLogger(UploadMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         deleteDirectory(new File(DIR));
+    }//GEN-LAST:event_btnClearDatabaseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearDatabase;
     private javax.swing.JButton btnUploadMovies;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JList<Movie> lsMovies;
     // End of variables declaration//GEN-END:variables
-
+    private static final String DIR = "assets";
     private DefaultListModel<Movie> moviesModel;
-    private Repository repository;
+    private Repository movieRepository;
+    private Repository genreRepository;
+    private Repository personRepository;
+    private Repository moviePersonRoleRepository;
+    private Repository movieGenreRepository;
+    private SQLRepository sqlRepository;
 
     private void init() {
         try {
-            repository = RepositoryFactory.getRepository(RepositoryFactory.RepoType.MOVIE);
+            movieRepository = RepositoryFactory.getRepository(RepositoryFactory.RepoType.MOVIE);
+            genreRepository = RepositoryFactory.getRepository(RepositoryFactory.RepoType.GENRE);
+            personRepository = RepositoryFactory.getRepository(RepositoryFactory.RepoType.PERSON);
+            movieGenreRepository = RepositoryFactory.getRepository(RepositoryFactory.RepoType.MOVIE_GENRE);
+            moviePersonRoleRepository = RepositoryFactory.getRepository(RepositoryFactory.RepoType.MOVIE_PERSON_ROLE);
+            sqlRepository= RepositoryFactory.getSqlRepository(RepositoryFactory.SqlRepoType.DATABASE);
+
             moviesModel = new DefaultListModel<>();
             loadModel();
         } catch (Exception ex) {
@@ -117,12 +208,22 @@ public class UploadMoviesPanel extends javax.swing.JPanel {
             System.exit(1);
         }
     }
-    
+
     private void loadModel() throws Exception {
-        List<Movie> movies = repository.selectAll();
+        List<Movie> movies = movieRepository.selectAll();
         moviesModel.clear();
         movies.forEach(moviesModel::addElement);
         lsMovies.setModel(moviesModel);
     }
+    private void deleteDirectory(File file) {
+        File[] content = file.listFiles();
+        if (content != null) {
+            for (File f : content) {
+                deleteDirectory(f);
+            }
+        }
+        file.delete();
+    }
+
 
 }

@@ -17,6 +17,7 @@ import hr.algebra.utilities.FileUtils;
 import hr.algebra.utilities.IconUtils;
 import hr.algebra.utilities.MessageUtils;
 import hr.algebra.view.model.MovieTableModel;
+import java.awt.Color;
 
 import java.util.List;
 import java.io.File;
@@ -37,7 +38,7 @@ import javax.swing.text.JTextComponent;
 
 /**
  *
- * @author daniel.bele
+ * @author Nina
  */
 public class EditMoviesPanel extends javax.swing.JPanel {
 
@@ -58,6 +59,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
     private Movie selectedMovie;
 
     public EditMoviesPanel() {
+    
         initComponents();
     }
 
@@ -122,7 +124,9 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         jLabel16 = new javax.swing.JLabel();
         tfActors = new javax.swing.JTextField();
         lbActorsError = new javax.swing.JLabel();
+        btnClearForm = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(21, 23, 21));
         setMaximumSize(new java.awt.Dimension(1700, 1100));
         setMinimumSize(new java.awt.Dimension(1700, 1100));
         setOpaque(false);
@@ -158,16 +162,19 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         lbIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/Popcorn.jpg"))); // NOI18N
         lbIcon.setMaximumSize(new java.awt.Dimension(400, 600));
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Title");
 
         lbTitleError.setForeground(new java.awt.Color(204, 0, 0));
         lbTitleError.setText("Error: Enter title");
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Link");
 
         lbLinkError.setForeground(new java.awt.Color(204, 0, 0));
         lbLinkError.setText("Error: Enter link");
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Description");
 
         lbDescriptionError.setForeground(new java.awt.Color(204, 0, 0));
@@ -178,9 +185,10 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         taDescription.setRows(5);
         jScrollPane2.setViewportView(taDescription);
 
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Published date (yyyy-dd-MMThh:mm:ss)");
 
-        tfPublishedDate.setName("Date"); // NOI18N
+        tfPublishedDate.setName("DateTime"); // NOI18N
 
         lbPublishedDateError.setForeground(new java.awt.Color(204, 0, 0));
         lbPublishedDateError.setText("Error: Wrong date format");
@@ -231,13 +239,15 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         lbPosterError.setForeground(new java.awt.Color(204, 0, 0));
         lbPosterError.setText("Error: Poster not choosen");
 
-        jLabel9.setText("Display date (yyyy-dd-MMThh:mm:ss)");
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Display date (yyyy-dd-MM)");
 
         tfDisplayDate.setName("Date"); // NOI18N
 
         lbDisplayDateError.setForeground(new java.awt.Color(204, 0, 0));
         lbDisplayDateError.setText("Error: Wrong date format");
 
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Duration");
 
         tfDuration.setName(""); // NOI18N
@@ -245,6 +255,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         lbDurationError.setForeground(new java.awt.Color(204, 0, 0));
         lbDurationError.setText("Error: Enter duration");
 
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Year");
 
         tfYear.setName(""); // NOI18N
@@ -252,11 +263,13 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         lbYearError.setForeground(new java.awt.Color(204, 0, 0));
         lbYearError.setText("Error: Enter year");
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Original title");
 
         lbOriginalTitleError.setForeground(new java.awt.Color(204, 0, 0));
         lbOriginalTitleError.setText("Error: Enter original title");
 
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("Actors");
 
         tfGenre.setName(""); // NOI18N
@@ -267,16 +280,19 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         lbReservationError.setForeground(new java.awt.Color(204, 0, 0));
         lbReservationError.setText("Error: Enter reservation");
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Reservation");
 
         lbPerformancesError.setForeground(new java.awt.Color(204, 0, 0));
         lbPerformancesError.setText("Error: Enter performances");
 
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Performances");
 
         lbTrailerError.setForeground(new java.awt.Color(204, 0, 0));
         lbTrailerError.setText("Error: Enter trailer");
 
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Trailer");
 
         tfDirectors.setName(""); // NOI18N
@@ -284,14 +300,26 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         lbDirectorsError.setForeground(new java.awt.Color(204, 0, 0));
         lbDirectorsError.setText("Error: Enter director");
 
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("Directors");
 
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Genre");
 
         tfActors.setName(""); // NOI18N
 
         lbActorsError.setForeground(new java.awt.Color(204, 0, 0));
         lbActorsError.setText("Error: Enter actor");
+
+        btnClearForm.setBackground(new java.awt.Color(153, 153, 255));
+        btnClearForm.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClearForm.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearForm.setText("Clear Form");
+        btnClearForm.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearFormActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -345,53 +373,52 @@ public class EditMoviesPanel extends javax.swing.JPanel {
                                                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(lbReservationError, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                     .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(lbActorsError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(layout.createSequentialGroup()
+                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(layout.createSequentialGroup()
+                                                            .addGap(11, 11, 11)
+                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                            .addComponent(tfDuration, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                                                                            .addComponent(tfPublishedDate)))
+                                                                    .addGap(47, 47, 47))
+                                                                .addGroup(layout.createSequentialGroup()
+                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(lbDurationError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(lbPublishedDateError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(lbGenreError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                    .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
+                                                                    .addComponent(tfDisplayDate))
+                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                                                    .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                    .addComponent(tfYear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                .addComponent(lbDisplayDateError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addComponent(lbYearError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                        .addComponent(tfDirectors, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(tfActors)
+                                                        .addComponent(tfGenre, javax.swing.GroupLayout.Alignment.TRAILING))
+                                                    .addGap(85, 85, 85)))
                                             .addGroup(layout.createSequentialGroup()
-                                                .addGap(42, 42, 42)
-                                                .addComponent(lbDirectorsError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addGroup(layout.createSequentialGroup()
                                                         .addGap(6, 6, 6)
                                                         .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                        .addComponent(lbActorsError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGroup(layout.createSequentialGroup()
-                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                .addGroup(layout.createSequentialGroup()
-                                                                    .addGap(11, 11, 11)
-                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                    .addComponent(tfDuration, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                                                                                    .addComponent(tfPublishedDate)))
-                                                                            .addGap(47, 47, 47))
-                                                                        .addGroup(layout.createSequentialGroup()
-                                                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addComponent(lbDurationError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addComponent(lbPublishedDateError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                .addComponent(lbGenreError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 223, Short.MAX_VALUE)
-                                                                            .addComponent(tfDisplayDate))
-                                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                            .addComponent(tfYear, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                        .addComponent(lbDisplayDateError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(lbYearError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                                .addComponent(tfDirectors, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addComponent(tfActors)
-                                                                .addComponent(tfGenre, javax.swing.GroupLayout.Alignment.TRAILING))
-                                                            .addGap(85, 85, 85)))))))
+                                                    .addComponent(lbDirectorsError, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
                                     .addGroup(layout.createSequentialGroup()
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(lbDescriptionError, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -399,12 +426,14 @@ public class EditMoviesPanel extends javax.swing.JPanel {
                                         .addGap(0, 0, Short.MAX_VALUE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
+                                .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnClearForm, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(tfPoster, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnChooseImage, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -522,10 +551,11 @@ public class EditMoviesPanel extends javax.swing.JPanel {
                     .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnChooseImage, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnUpdate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(9, 9, 9)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                .addContainerGap())
+                    .addComponent(btnAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnClearForm, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 369, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -538,7 +568,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
             String localPicturePath = uploadPicture();
             Movie movie = new Movie(
                     tfTitle.getText().trim(),
-                    LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_FORMATTER),
+                    LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_TIME_FORMATTER),
                     tfOriginalTitle.getText().trim(),
                     taDescription.getText().trim(),
                     Integer.parseInt(tfDuration.getText().trim()),
@@ -578,7 +608,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
                 moviePersonRoleRepository.create(moviePersonRole);
             }
             movieTableModel.setMovies(getMovies());
-            ;
+
             clearForm();
         } catch (Exception ex) {
             Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
@@ -587,59 +617,100 @@ public class EditMoviesPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-//        if (selectedMovie == null) {
-//            MessageUtils.showInformationMessage("Wrong operation", "Please choose movie to update");
-//            return;
-//        }
-//        if (!formValid()) {
-//            return;
-//        }
-//        try {
-//            if (!tfPoster.getText().trim().equals(selectedMovie.getPoster())) {
-//                if (selectedMovie.getPoster() != null) {
-//                    Files.deleteIfExists(Paths.get(selectedMovie.getPoster()));
-//                }
-//                String localPicturePath = uploadPicture();
-//                selectedMovie.setPoster(localPicturePath);
-//            }
-//
-//            selectedMovie.setTitle(tfTitle.getText().trim());
-//            selectedMovie.setLink(tfLink.getText().trim());
-//            selectedMovie.setDescription(taDescription.getText().trim());
-//            selectedMovie.setPubDate(LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_FORMATTER));
-//
-//            movieRepository.update(selectedMovie.getId(), selectedMovie);
-//            movieTableModel.setMovies(movieRepository.selectAll());
-//
-//            clearForm();
-//        } catch (Exception ex) {
-//            Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
-//            MessageUtils.showErrorMessage("Error", "Unable to update movie!");
-//        }
+        if (selectedMovie == null) {
+            MessageUtils.showInformationMessage("Wrong operation", "Please choose movie to update");
+            return;
+        }
+        if (!formValid()) {
+            return;
+        }
+        try {
+            // Get the current movie
+
+            //Movie movie = movieRepository.select(selectedMovie.getId());
+            if (!tfPoster.getText().trim().equals(selectedMovie.getPoster())) {
+                if (selectedMovie.getPoster() != null) {
+                    Files.deleteIfExists(Paths.get(selectedMovie.getPoster()));
+                }
+                String localPicturePath = uploadPicture();
+                selectedMovie.setPoster(localPicturePath);
+            }
+
+            // Update Movie
+            selectedMovie.setTitle(tfTitle.getText().trim());
+            selectedMovie.setPubDate(LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_TIME_FORMATTER));
+            selectedMovie.setOriginalTitle(tfOriginalTitle.getText().trim());
+            selectedMovie.setDescription(taDescription.getText().trim());
+            selectedMovie.setDuration(Integer.parseInt(tfDuration.getText().trim()));
+            selectedMovie.setYear(Integer.parseInt(tfYear.getText().trim()));
+            selectedMovie.setLink(tfLink.getText().trim());
+            selectedMovie.setReservation(tfReservation.getText().trim());
+            selectedMovie.setDisplayDate(LocalDateTime.parse(tfDisplayDate.getText().trim(), Movie.DATE_FORMATTER));
+            selectedMovie.setPerformances(tfPerformances.getText().trim());
+            selectedMovie.setTrailer(tfTrailer.getText().trim());
+
+            movieRepository.update(selectedMovie.getId(), selectedMovie);
+
+            // Delete old MovieGenres and MoviePersonRoles
+            movieGenreRepository.delete(selectedMovie.getId());
+            moviePersonRoleRepository.delete(selectedMovie.getId());
+
+            // Parse Genres and create MovieGenres
+            String[] genresStr = tfGenre.getText().trim().split(",");
+            for (String genreStr : genresStr) {
+                Genre genre = new Genre(genreStr.trim());
+                int genreId = genreRepository.create(genre);
+                MovieGenre movieGenre = new MovieGenre(selectedMovie.getId(), genreId);
+                movieGenreRepository.create(movieGenre);
+            }
+
+            // Parse Persons and create MoviePersonRoles
+            String[] actorsStr = tfActors.getText().trim().split(",");
+            String[] directorsStr = tfDirectors.getText().trim().split(",");
+            for (String actorStr : actorsStr) {
+                Person actor = new Person(actorStr.trim());
+                int actorId = personRepository.create(actor);
+                MoviePersonRole moviePersonRole = new MoviePersonRole(selectedMovie.getId(), actorId, 1);  // 1 is the predefined ID for Actor role
+                moviePersonRoleRepository.create(moviePersonRole);
+            }
+            for (String directorStr : directorsStr) {
+                Person director = new Person(directorStr.trim());
+                int directorId = personRepository.create(director);
+                MoviePersonRole moviePersonRole = new MoviePersonRole(selectedMovie.getId(), directorId, 2);  // 2 is the predefined ID for Director role
+                moviePersonRoleRepository.create(moviePersonRole);
+            }
+
+            movieTableModel.setMovies(getMovies());
+
+            clearForm();
+        } catch (Exception ex) {
+            Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage("Error", "Unable to update movie!");
+        }
 
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-//        if (selectedMovie == null) {
-//            MessageUtils.showInformationMessage("Wrong operation", "Please choose movie to delete");
-//            return;
-//        }
-//        if (MessageUtils.showConfirmDialog(
-//                "Delete movie",
-//                "Do you really want to delete movie?")) {
-//            try {
-//                if (selectedMovie.getPoster() != null) {
-//                    Files.deleteIfExists(Paths.get(selectedMovie.getPoster()));
-//                }
-//                movieRepository.delete(selectedMovie.getId());
-//                movieTableModel.setMovies(movieRepository.selectAll());
-//
-//                clearForm();
-//            } catch (Exception ex) {
-//                Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
-//                MessageUtils.showErrorMessage("Error", "Unable to delete movie!");
-//            }
-//        }
+        if (selectedMovie == null) {
+            MessageUtils.showInformationMessage("Wrong operation", "Please choose movie to delete");
+            return;
+        }
+        if (MessageUtils.showConfirmDialog(
+                "Delete movie",
+                "Do you really want to delete movie?")) {
+            try {
+                if (selectedMovie.getPoster() != null) {
+                    Files.deleteIfExists(Paths.get(selectedMovie.getPoster()));
+                }
+                movieRepository.delete(selectedMovie.getId());
+                movieTableModel.setMovies(getMovies());
+
+                clearForm();
+            } catch (Exception ex) {
+                Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+                MessageUtils.showErrorMessage("Error", "Unable to delete movie!");
+            }
+        }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnChooseImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChooseImageActionPerformed
@@ -673,10 +744,15 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         init();
     }//GEN-LAST:event_formComponentShown
 
+    private void btnClearFormActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFormActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnClearFormActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnChooseImage;
+    private javax.swing.JButton btnClearForm;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JLabel jLabel10;
@@ -730,6 +806,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void init() {
+        
         try {
             initValidation();
             hideErrors();
@@ -776,6 +853,14 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         for (int i = 0; i < validationFields.size(); i++) {
             ok &= !validationFields.get(i).getText().trim().isEmpty();
             errorLabels.get(i).setVisible(validationFields.get(i).getText().trim().isEmpty());
+            if ("DateTime".equals(validationFields.get(i).getName())) {
+                try {
+                    LocalDateTime.parse(validationFields.get(i).getText().trim(), Movie.DATE_TIME_FORMATTER);
+                } catch (Exception e) {
+                    ok = false;
+                    errorLabels.get(i).setVisible(true);
+                }
+            }
             if ("Date".equals(validationFields.get(i).getName())) {
                 try {
                     LocalDateTime.parse(validationFields.get(i).getText().trim(), Movie.DATE_FORMATTER);
@@ -810,7 +895,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         int selectedRow = tbMovies.getSelectedRow();
         int rowIndex = tbMovies.convertRowIndexToModel(selectedRow);
         int selectedMovieId = (int) movieTableModel.getValueAt(rowIndex, 0);
-         
+
         try {
             List<MovieGenre> movieGenres = movieGenreRepository.selectAll();
             List<MoviePersonRole> moviePersonRoles = moviePersonRoleRepository.selectAll();
@@ -819,18 +904,28 @@ public class EditMoviesPanel extends javax.swing.JPanel {
             for (MovieGenre movieGenre : movieGenres) {
                 Optional<Genre> genre = genreRepository.select(movieGenre.getGenreId());
                 if (genre.isPresent()) {
-                    genres.add(genre.get());
+                    if (movieGenre.getMovieId() == selectedMovieId) {
+                        genres.add(genre.get());
+                    }
                 }
             }
-           List<Person> actors = new ArrayList<>();
-           List<Person> directors = new ArrayList<>();
-           for (MoviePersonRole moviePersonRole : moviePersonRoles) {
-                
-            }
-           
+
             if (optMovie.isPresent()) {
                 selectedMovie = optMovie.get();
-                
+                List<Person> actors = new ArrayList<>();
+                List<Person> directors = new ArrayList<>();
+                for (MoviePersonRole moviePersonRole : moviePersonRoles) {
+                    Optional<Person> person = personRepository.select(moviePersonRole.getPersonId());
+
+                    if (person.isPresent()) {
+                        if (moviePersonRole.getRoleId() == 1 && moviePersonRole.getMovieId() == selectedMovieId) {
+                            actors.add(person.get());
+                        } else if (moviePersonRole.getRoleId() == 2 && moviePersonRole.getMovieId() == selectedMovieId) {
+                            directors.add(person.get());
+                        }
+                    }
+                }
+
                 fillForm(selectedMovie, genres, actors, directors);
             }
         } catch (Exception ex) {
@@ -839,7 +934,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         }
     }
 
-    private void fillForm(Movie movie, List<Genre>genres, List<Person>actors, List<Person>directors) {
+    private void fillForm(Movie movie, List<Genre> genres, List<Person> actors, List<Person> directors) {
         if (movie.getPoster() != null && Files.exists(Paths.get(movie.getPoster()))) {
             tfPoster.setText(movie.getPoster());
             setIcon(lbIcon, new File(movie.getPoster()));
@@ -854,6 +949,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         tfReservation.setText(movie.getReservation());
         tfDisplayDate.setText(movie.getDisplayDate().format(Movie.DATE_FORMATTER));
         tfTrailer.setText(movie.getTrailer());
+        tfPerformances.setText(movie.getPerformances());
         tfGenre.setText(genres.stream().map(Object::toString).collect(Collectors.joining(", ")));
         tfActors.setText(actors.stream().map(Object::toString).collect(Collectors.joining(", ")));
         tfDirectors.setText(directors.stream().map(Object::toString).collect(Collectors.joining(", ")));

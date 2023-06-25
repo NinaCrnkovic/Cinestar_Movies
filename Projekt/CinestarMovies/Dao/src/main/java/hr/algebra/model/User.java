@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Set;
+
 
 /**
  *
@@ -23,6 +23,11 @@ public final class User {
     private String username;
     private String password;
     private int accountTypeId;
+
+    public User() {
+    }
+    
+    
 
     public User(String username, String password) {
         this.username = username;
@@ -93,6 +98,11 @@ public final class User {
         messageDigest.update(salt.getBytes());
         byte[] hashedPassword = messageDigest.digest(password.getBytes());
         return Base64.getEncoder().encodeToString(hashedPassword);
+    }
+
+    @Override
+    public String toString() {
+        return  username;
     }
 
 }

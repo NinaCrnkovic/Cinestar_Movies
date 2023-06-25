@@ -14,6 +14,11 @@ public final class MoviePersonRole {
     private int personId;
     private int roleId;
 
+    public MoviePersonRole() {
+    }
+
+    
+    
     public MoviePersonRole(int movieId, int personId, int roleId) {
         this.movieId = movieId;
         this.personId = personId;
