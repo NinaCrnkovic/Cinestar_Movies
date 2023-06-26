@@ -4,10 +4,13 @@
  */
 package hr.algebra.dal;
 
+import hr.algebra.model.User;
+
 /**
  *
  * @author Nina
  */
-public interface SQLRepository {
-    void clearDatabase();
+public interface LoginService {
+    void userLoginIn(User user);
+    void userLoggedOut();
 }

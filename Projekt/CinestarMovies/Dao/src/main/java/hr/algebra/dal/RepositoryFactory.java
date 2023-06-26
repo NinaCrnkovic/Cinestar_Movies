@@ -20,7 +20,7 @@ public final class RepositoryFactory {
     private static final Properties properties = new Properties();
     private static final String PATH = "/config/repository.properties";
     private static final Map<RepoType, Repository> repositories = new HashMap<>();
-    private static final Map<SqlRepoType, SQLRepository> sqlRepositories = new HashMap<>();
+    private static final Map<SqlRepoType, SQLServiceRepository> sqlRepositories = new HashMap<>();
 
     static {
         try (InputStream is = RepositoryFactory.class.getResourceAsStream(PATH)) {
@@ -37,7 +37,7 @@ public final class RepositoryFactory {
 
             for (SqlRepoType type : SqlRepoType.values()) {
                 String className = properties.getProperty(type.name());
-                SQLRepository sqlRepository = (SQLRepository) Class
+                SQLServiceRepository sqlRepository = (SQLServiceRepository) Class
                         .forName(className)
                         .getDeclaredConstructor()
                         .newInstance();
@@ -53,7 +53,7 @@ public final class RepositoryFactory {
         return repositories.get(type);
     }
 
-    public static SQLRepository getSqlRepository(SqlRepoType type) {
+    public static SQLServiceRepository getSqlRepository(SqlRepoType type) {
         return sqlRepositories.get(type);
     }
 

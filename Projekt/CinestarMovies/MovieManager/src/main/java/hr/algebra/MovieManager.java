@@ -4,6 +4,8 @@
  */
 package hr.algebra;
 
+import hr.algebra.dal.LoginService;
+import hr.algebra.model.User;
 import hr.algebra.utilities.MessageUtils;
 import hr.algebra.view.EditMoviesPanel;
 import hr.algebra.view.FavoriteMoviesPanel;
@@ -11,18 +13,18 @@ import hr.algebra.view.LoginPanel;
 import hr.algebra.view.RegisterPanel;
 import hr.algebra.view.UploadMoviesPanel;
 
-
 /**
  *
  * @author Nina
  */
-public class MovieManager extends javax.swing.JFrame {
+public class MovieManager extends javax.swing.JFrame implements LoginService{
 
     private static final String UPLOAD_MOVIES = "Admmin";
     private static final String EDIT_MOVIES = "Edit movies";
     private static final String LOGIN = "Login";
     private static final String REGISTER = "Register";
     private static final String FAVORITE_MOVIES = "Favorite movies";
+    
 
     /**
      * Creates new form ArticleManager
@@ -124,7 +126,7 @@ public class MovieManager extends javax.swing.JFrame {
     }//GEN-LAST:event_menuAboutActionPerformed
 
     private void menuLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuLogoutActionPerformed
-       
+        userLoggedOut();
     }//GEN-LAST:event_menuLogoutActionPerformed
 
     private void menuExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuExitActionPerformed
@@ -176,12 +178,85 @@ public class MovieManager extends javax.swing.JFrame {
     private javax.swing.JMenuItem menuLogout;
     private javax.swing.JTabbedPane tpContent;
     // End of variables declaration//GEN-END:variables
+    private LoginPanel loginPanel;
+    private RegisterPanel registerPanel;
+    private UploadMoviesPanel uploadMoviesPanel;
+    private EditMoviesPanel editMoviesPanel;
+    private FavoriteMoviesPanel favoriteMoviesPanel;
+    private User logedUser = new User();
 
     private void configurePanels() {
-        tpContent.add(LOGIN, new LoginPanel());
-        tpContent.add(REGISTER, new RegisterPanel());
-        tpContent.add(UPLOAD_MOVIES, new UploadMoviesPanel());
-        tpContent.add(EDIT_MOVIES, new EditMoviesPanel());
-        tpContent.add(FAVORITE_MOVIES, new FavoriteMoviesPanel());
+
+        loginPanel = new LoginPanel();
+        registerPanel = new RegisterPanel();
+
+        loginPanel.addLoginService(this);
+        registerPanel.addLoginService(this);
+        
+        tpContent.add(LOGIN, loginPanel);
+        tpContent.add(REGISTER, registerPanel);
+        
+
+    }
+    public void callLoginAndRegisterPanel(){
+        
+        tpContent.remove(uploadMoviesPanel);
+        tpContent.remove(editMoviesPanel);
+        tpContent.remove(favoriteMoviesPanel);
+        
+        
+        loginPanel = new LoginPanel();
+        registerPanel = new RegisterPanel();
+
+        loginPanel.addLoginService(this);
+        registerPanel.addLoginService(this);
+        
+        tpContent.add(LOGIN, loginPanel);
+        tpContent.add(REGISTER, registerPanel);
+    }
+    
+    
+    public void callAdminPanel(){
+        tpContent.remove(loginPanel);
+         tpContent.remove(registerPanel);
+        uploadMoviesPanel = new UploadMoviesPanel();
+        tpContent.add(UPLOAD_MOVIES, uploadMoviesPanel);
+    }
+    
+    public void callUserPanel(){
+        tpContent.remove(loginPanel);
+        tpContent.remove(registerPanel);
+        editMoviesPanel = new EditMoviesPanel();
+        tpContent.add(EDIT_MOVIES, editMoviesPanel);
+        
+        favoriteMoviesPanel = new FavoriteMoviesPanel();
+        favoriteMoviesPanel.setUser(logedUser);
+        tpContent.add(FAVORITE_MOVIES, favoriteMoviesPanel);
+    }
+
+
+
+    
+
+    @Override
+    public void userLoginIn(User user) {
+        logedUser = user;
+        if (user.getAccountTypeId() == 2){
+             callUserPanel();
+        }
+        else if(user.getAccountTypeId() == 1){
+            callAdminPanel();
+        }
+       
+         
+       
+    }
+        
+        
+
+    @Override
+    public void userLoggedOut() {
+       logedUser = null;
+       callLoginAndRegisterPanel();
     }
 }

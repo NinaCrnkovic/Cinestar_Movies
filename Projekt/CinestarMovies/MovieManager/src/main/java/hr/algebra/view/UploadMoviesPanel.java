@@ -6,7 +6,6 @@ package hr.algebra.view;
 
 import hr.algebra.dal.Repository;
 import hr.algebra.dal.RepositoryFactory;
-import hr.algebra.dal.SQLRepository;
 import hr.algebra.model.Genre;
 import hr.algebra.model.Movie;
 import hr.algebra.model.MovieGenre;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import hr.algebra.dal.SQLServiceRepository;
 
 /**
  *
@@ -189,7 +189,7 @@ public class UploadMoviesPanel extends javax.swing.JPanel {
     private Repository personRepository;
     private Repository moviePersonRoleRepository;
     private Repository movieGenreRepository;
-    private SQLRepository sqlRepository;
+    private SQLServiceRepository sqlRepository;
 
     private void init() {
         try {

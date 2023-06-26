@@ -4,11 +4,13 @@
  */
 package hr.algebra.model;
 
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.util.Base64;
-
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 /**
  *
@@ -16,8 +18,10 @@ import java.util.Base64;
  */
 public final class User {
 
-    private static final String HASH_ALGORITHM = "SHA-256";
     private static final int SALT_LENGTH = 16;
+    private static final int ITERATIONS = 65536;
+    private static final int KEY_LENGTH = 128;
+    
 
     private int id;
     private String username;
@@ -26,15 +30,23 @@ public final class User {
 
     public User() {
     }
-    
-    
 
     public User(String username, String password) {
         this.username = username;
         this.password = password;
         setAccountType(2);
 
-        
+    }
+
+    public User(String username, int accountTypeId) {
+
+        this.username = username;
+        this.accountTypeId = accountTypeId;
+    }
+
+    public User(int id, String username) {
+        this.id = id;
+        this.username = username;
     }
 
     public User(String username, String password, int accountTypeId) {
@@ -79,30 +91,32 @@ public final class User {
     public void setAccountType(int accountTypeId) {
         this.accountTypeId = accountTypeId;
     }
-    
-    public void hashPassword() throws NoSuchAlgorithmException {
-        String salt = generateSalt();
-        String hashedPassword = hashPassword(password, salt);
-        this.password = hashedPassword;
-    }
 
-    private String generateSalt() {
+    public static String generateSalt() {
+        SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_LENGTH];
-        SecureRandom secureRandom = new SecureRandom();
-        secureRandom.nextBytes(salt);
+        random.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
     }
 
-    private String hashPassword(String password, String salt) throws NoSuchAlgorithmException {
-        MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
-        messageDigest.update(salt.getBytes());
-        byte[] hashedPassword = messageDigest.digest(password.getBytes());
-        return Base64.getEncoder().encodeToString(hashedPassword);
+    public static String generateHash(String password, String salt) {
+        char[] passwordChars = password.toCharArray();
+        byte[] saltBytes = Base64.getDecoder().decode(salt);
+
+        KeySpec spec = new PBEKeySpec(passwordChars, saltBytes, ITERATIONS, KEY_LENGTH);
+
+        try {
+            SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            byte[] hash = factory.generateSecret(spec).getEncoded();
+            return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException("Error while hashing password", e);
+        }
     }
 
     @Override
     public String toString() {
-        return  username;
+        return username;
     }
 
 }

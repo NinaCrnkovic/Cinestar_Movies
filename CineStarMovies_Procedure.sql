@@ -512,6 +512,28 @@ BEGIN
 END
 GO
 
+CREATE PROCEDURE SelectSaltByUsername
+    @Username NVARCHAR(255)
+AS
+BEGIN
+    SELECT PwdSalt FROM [User]
+    WHERE Username = @Username
+END
+GO
+
+
+CREATE PROCEDURE SelectUserByUsernameAndPassword
+    @Username NVARCHAR(255),
+    @PwdHash NVARCHAR(MAX),
+    @PwdSalt NVARCHAR(MAX)
+
+AS
+BEGIN
+    SELECT * FROM [User]
+    WHERE Username = @Username AND PwdSalt = @PwdSalt AND PwdHash = @PwdHash
+END
+go
+
 CREATE PROCEDURE SelectUser
     @ID INT
 AS
@@ -520,6 +542,7 @@ BEGIN
     WHERE ID = @ID
 END
 GO
+
 
 CREATE PROCEDURE DeleteUser
     @ID INT
@@ -582,11 +605,11 @@ END
 GO
 
 ----- SELECT PROCEDURE
-CREATE PROCEDURE SelectFavoriteMovie
-    @ID INT
+CREATE or alter PROCEDURE SelectFavoriteMovie
+    @UserID INT
 AS
 BEGIN
-    SELECT * FROM FavoriteMovie WHERE ID = @ID
+    SELECT * FROM FavoriteMovie WHERE UserID = @UserID
 END
 GO
 

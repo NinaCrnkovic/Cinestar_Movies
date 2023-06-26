@@ -4,15 +4,15 @@
  */
 package hr.algebra.dal.sql;
 
-import hr.algebra.dal.SQLRepository;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import hr.algebra.dal.SQLServiceRepository;
 
-public class SqlRepository implements SQLRepository {
+public class SqlRepository implements SQLServiceRepository {
 
     private static final String CLEAR_DATABASE = "{ CALL clearTables }";
 

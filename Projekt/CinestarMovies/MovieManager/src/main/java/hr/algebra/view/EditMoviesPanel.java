@@ -17,7 +17,6 @@ import hr.algebra.utilities.FileUtils;
 import hr.algebra.utilities.IconUtils;
 import hr.algebra.utilities.MessageUtils;
 import hr.algebra.view.model.MovieTableModel;
-import java.awt.Color;
 
 import java.util.List;
 import java.io.File;
@@ -59,7 +58,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
     private Movie selectedMovie;
 
     public EditMoviesPanel() {
-    
+
         initComponents();
     }
 
@@ -188,7 +187,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Published date (yyyy-dd-MMThh:mm:ss)");
 
-        tfPublishedDate.setName("DateTime"); // NOI18N
+        tfPublishedDate.setName("Date"); // NOI18N
 
         lbPublishedDateError.setForeground(new java.awt.Color(204, 0, 0));
         lbPublishedDateError.setText("Error: Wrong date format");
@@ -250,7 +249,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Duration");
 
-        tfDuration.setName(""); // NOI18N
+        tfDuration.setName("Number"); // NOI18N
 
         lbDurationError.setForeground(new java.awt.Color(204, 0, 0));
         lbDurationError.setText("Error: Enter duration");
@@ -258,7 +257,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Year");
 
-        tfYear.setName(""); // NOI18N
+        tfYear.setName("Number"); // NOI18N
 
         lbYearError.setForeground(new java.awt.Color(204, 0, 0));
         lbYearError.setText("Error: Enter year");
@@ -568,7 +567,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
             String localPicturePath = uploadPicture();
             Movie movie = new Movie(
                     tfTitle.getText().trim(),
-                    LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_TIME_FORMATTER),
+                    LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_FORMATTER),
                     tfOriginalTitle.getText().trim(),
                     taDescription.getText().trim(),
                     Integer.parseInt(tfDuration.getText().trim()),
@@ -638,7 +637,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
 
             // Update Movie
             selectedMovie.setTitle(tfTitle.getText().trim());
-            selectedMovie.setPubDate(LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_TIME_FORMATTER));
+            selectedMovie.setPubDate(LocalDateTime.parse(tfPublishedDate.getText().trim(), Movie.DATE_FORMATTER));
             selectedMovie.setOriginalTitle(tfOriginalTitle.getText().trim());
             selectedMovie.setDescription(taDescription.getText().trim());
             selectedMovie.setDuration(Integer.parseInt(tfDuration.getText().trim()));
@@ -806,7 +805,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void init() {
-        
+
         try {
             initValidation();
             hideErrors();
@@ -853,14 +852,7 @@ public class EditMoviesPanel extends javax.swing.JPanel {
         for (int i = 0; i < validationFields.size(); i++) {
             ok &= !validationFields.get(i).getText().trim().isEmpty();
             errorLabels.get(i).setVisible(validationFields.get(i).getText().trim().isEmpty());
-            if ("DateTime".equals(validationFields.get(i).getName())) {
-                try {
-                    LocalDateTime.parse(validationFields.get(i).getText().trim(), Movie.DATE_TIME_FORMATTER);
-                } catch (Exception e) {
-                    ok = false;
-                    errorLabels.get(i).setVisible(true);
-                }
-            }
+
             if ("Date".equals(validationFields.get(i).getName())) {
                 try {
                     LocalDateTime.parse(validationFields.get(i).getText().trim(), Movie.DATE_FORMATTER);
@@ -869,6 +861,15 @@ public class EditMoviesPanel extends javax.swing.JPanel {
                     errorLabels.get(i).setVisible(true);
                 }
             }
+            if ("Number".equals(validationFields.get(i).getName())) {
+                try {
+                    Integer.valueOf(validationFields.get(i).getText().trim());
+                } catch (NumberFormatException e) {
+                    ok = false;
+                    errorLabels.get(i).setVisible(true);
+                }
+            }
+
         }
         return ok;
     }

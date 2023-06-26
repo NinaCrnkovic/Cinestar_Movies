@@ -4,17 +4,18 @@
  */
 package hr.algebra.view;
 
-import hr.algebra.dal.Repository;
-import hr.algebra.dal.RepositoryFactory;
-import hr.algebra.dal.SQLRepository;
-import hr.algebra.model.Movie;
+import com.sun.source.tree.ParenthesizedTree;
+import hr.algebra.dal.LoginService;
 import hr.algebra.utilities.MessageUtils;
-import java.io.File;
 
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
+import hr.algebra.dal.sql.UserRepository;
+import hr.algebra.model.User;
+import java.util.Arrays;
+import javax.swing.JLabel;
+import javax.swing.text.JTextComponent;
 
 /**
  *
@@ -25,8 +26,12 @@ public class RegisterPanel extends javax.swing.JPanel {
     /**
      * Creates new form UploadArticlesPanel
      */
+    private List<JTextComponent> validationFields;
+    private List<JLabel> errorLabels;
+
     public RegisterPanel() {
         initComponents();
+
     }
 
     /**
@@ -108,27 +113,26 @@ public class RegisterPanel extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                .addGap(102, 102, 102)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(lbUsernameError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbPasswordError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbRepeatPasswordError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
-                        .addComponent(tfPassword, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(tfUsername)
-                        .addComponent(tfRepeatPassword)
-                        .addComponent(btnRegister, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(37, 37, 37))
+                    .addComponent(lbUsernameError, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(tfRepeatPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbRepeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
@@ -143,15 +147,15 @@ public class RegisterPanel extends javax.swing.JPanel {
                         .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(tfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(15, 15, 15)
                         .addComponent(lbPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(tfRepeatPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbRepeatPasswordError, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnRegister, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(167, Short.MAX_VALUE))
         );
@@ -162,7 +166,25 @@ public class RegisterPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_formComponentShown
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-        
+        if (!formValid()) {
+            return;
+        }
+        try {
+            user = new User(
+                    tfUsername.getText().trim(),
+                    tfPassword.getText().trim(),
+                    2
+            );
+            int userId = userRepostiory.create(user);
+            user.setId(userId);
+            loginService.userLoginIn(user);
+
+            clearForm();
+
+        } catch (Exception ex) {
+            Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage("Error", "Unable to create movie!");
+        }
     }//GEN-LAST:event_btnRegisterActionPerformed
 
 
@@ -180,13 +202,70 @@ public class RegisterPanel extends javax.swing.JPanel {
     private javax.swing.JTextField tfRepeatPassword;
     private javax.swing.JTextField tfUsername;
     // End of variables declaration//GEN-END:variables
-    
 
-    private void init() {
-        
+    private UserRepository userRepostiory;
+
+    private User user;
+    private LoginService loginService;
+
+    public void addLoginService(LoginService service) {
+        this.loginService = service;
     }
 
-    
+    private void init() {
+        try {
+            initValidation();
+            hideErrors();
+            initRepository();
 
+        } catch (Exception ex) {
+            Logger.getLogger(EditMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
+            System.exit(1);
+        }
+    }
+
+    private void initValidation() {
+        validationFields = Arrays.asList(tfUsername, tfPassword, tfRepeatPassword);
+        errorLabels = Arrays.asList(lbUsernameError, lbPasswordError, lbRepeatPasswordError);
+    }
+
+    private void hideErrors() {
+        errorLabels.forEach(e -> e.setVisible(false));
+    }
+
+    private void initRepository() throws Exception {
+        userRepostiory = new UserRepository();
+
+    }
+
+    private boolean formValid() {
+        hideErrors();
+        boolean ok = true;
+
+        for (int i = 0; i < validationFields.size(); i++) {
+            ok &= !validationFields.get(i).getText().trim().isEmpty();
+            errorLabels.get(i).setVisible(validationFields.get(i).getText().trim().isEmpty());
+
+        }
+        // Provjera jesu li zadnje dvije lozinke iste
+        if (validationFields.size() > 1) {
+            int lastIndex = validationFields.size() - 1;
+            int secondLastIndex = lastIndex - 1;
+
+            if (!validationFields.get(lastIndex).getText().equals(validationFields.get(secondLastIndex).getText())) {
+                ok = false;
+                errorLabels.get(lastIndex).setVisible(true);
+            }
+        }
+
+        return ok;
+    }
+
+    private void clearForm() {
+        hideErrors();
+        validationFields.forEach(e -> e.setText(""));
+
+    }
 
 }

@@ -91,14 +91,14 @@ public class FavoriteMovieRepository implements Repository<FavoriteMovie> {
         DataSource dataSource = DataSourceSingleton.getInstance();
         try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_FAVORITE_MOVIE)) {
 
-            stmt.setInt(ID_FAVORITE_MOVIE, id);
+            stmt.setInt(USER_ID, id);
             try (ResultSet rs = stmt.executeQuery()) {
 
                 if (rs.next()) {
                     return Optional.of(new FavoriteMovie(
                             rs.getInt(ID_FAVORITE_MOVIE),
-                            rs.getInt(USER_ID),
-                            rs.getInt(MOVIE_ID)));
+                            rs.getInt(MOVIE_ID),
+                            rs.getInt(USER_ID)));
                 }
             }
         }
@@ -114,8 +114,8 @@ public class FavoriteMovieRepository implements Repository<FavoriteMovie> {
             while (rs.next()) {
                 favoriteMovies.add(new FavoriteMovie(
                         rs.getInt(ID_FAVORITE_MOVIE),
-                        rs.getInt(USER_ID),
-                        rs.getInt(MOVIE_ID)));
+                        rs.getInt(MOVIE_ID),
+                            rs.getInt(USER_ID)));
             }
         }
         return favoriteMovies;
