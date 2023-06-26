@@ -522,7 +522,7 @@ END
 GO
 
 
-CREATE PROCEDURE SelectUserByUsernameAndPassword
+CREATE or alter PROCEDURE SelectUserByUsernameAndPassword
     @Username NVARCHAR(255),
     @PwdHash NVARCHAR(MAX),
     @PwdSalt NVARCHAR(MAX)
@@ -533,6 +533,7 @@ BEGIN
     WHERE Username = @Username AND PwdSalt = @PwdSalt AND PwdHash = @PwdHash
 END
 go
+
 
 CREATE PROCEDURE SelectUser
     @ID INT
@@ -613,10 +614,19 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE SelectFavoriteMovies
+CREATE or alter PROCEDURE SelectFavoriteMovies
 AS
 BEGIN
     SELECT * FROM FavoriteMovie
+END
+GO
+
+CREATE or ALTER PROCEDURE SelectFavoriteMoviesById
+    @UserID INT
+AS
+BEGIN
+    SELECT * FROM FavoriteMovie
+    WHERE UserID = @UserID
 END
 GO
 
@@ -632,10 +642,26 @@ BEGIN
     DELETE FROM Person;
     DELETE FROM Movie;
     DELETE FROM Genre;
+	--DELETE FROM [User];
     
     -- Turn constraint checking back on
     EXEC sp_MSforeachtable "ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all";
 END;
 
 EXEC ClearTables
--- Jun 23 2023 12:00PM
+
+go
+CREATE OR ALTER PROCEDURE CreateAdminUser AS
+BEGIN
+    DECLARE @AdminCount INT;
+    SELECT @AdminCount = COUNT(*) FROM [User] WHERE AccountTypeID = 1;
+
+    IF @AdminCount = 0
+    BEGIN
+        DECLARE @Salt NVARCHAR(MAX) = 'Bupph5yMdHAztZXg7Rhtcg==';
+        DECLARE @PwdHash NVARCHAR(MAX) = '0BphBPhD3GOt8hGr0iY2fA==';
+
+        INSERT INTO [User] (Username, PwdHash, PwdSalt, AccountTypeID)
+        VALUES ('admin', @PwdHash, @Salt, 1);
+    END
+END

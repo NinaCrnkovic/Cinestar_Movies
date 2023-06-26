@@ -26,5 +26,11 @@ public interface Repository<T> {
     Optional<T> select(int id) throws Exception;
 
     List<T> selectAll() throws Exception;
+    
+
+
+
+
+
 
 }

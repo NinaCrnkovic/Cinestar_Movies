@@ -13,4 +13,5 @@ import hr.algebra.model.User;
 public interface LoginService {
     void userLoginIn(User user);
     void userLoggedOut();
+    void createAdminUserIfNotExist();
 }

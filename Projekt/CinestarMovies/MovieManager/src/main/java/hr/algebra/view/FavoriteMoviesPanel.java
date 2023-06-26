@@ -8,8 +8,12 @@ import hr.algebra.dal.Repository;
 import hr.algebra.dal.RepositoryFactory;
 import hr.algebra.model.FavoriteMovie;
 import hr.algebra.model.Movie;
+import hr.algebra.model.MovieTransferable;
 import hr.algebra.model.User;
 import hr.algebra.utilities.MessageUtils;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -17,7 +21,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.swing.DefaultListModel;
+import javax.swing.DropMode;
+import javax.swing.JComponent;
+import javax.swing.ListSelectionModel;
+import javax.swing.TransferHandler;
 
 /**
  *
@@ -49,6 +58,8 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         lsFavoriteMovies = new javax.swing.JList<>();
         jLabel4 = new javax.swing.JLabel();
+        btnClearFavoriteMovies = new javax.swing.JButton();
+        btnSaveFavMovies = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(23, 21, 23));
         addComponentListener(new java.awt.event.ComponentAdapter() {
@@ -82,6 +93,26 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("All Movies");
 
+        btnClearFavoriteMovies.setBackground(new java.awt.Color(0, 102, 204));
+        btnClearFavoriteMovies.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnClearFavoriteMovies.setForeground(new java.awt.Color(255, 255, 255));
+        btnClearFavoriteMovies.setText("Clear Favorite Movies");
+        btnClearFavoriteMovies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearFavoriteMoviesActionPerformed(evt);
+            }
+        });
+
+        btnSaveFavMovies.setBackground(new java.awt.Color(0, 102, 204));
+        btnSaveFavMovies.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSaveFavMovies.setForeground(new java.awt.Color(255, 255, 255));
+        btnSaveFavMovies.setText("Save Favorite Movies");
+        btnSaveFavMovies.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveFavMoviesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,7 +121,9 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
                 .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lbUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClearFavoriteMovies, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSaveFavMovies, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(59, 59, 59)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 450, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
@@ -118,7 +151,12 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 791, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 791, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(78, 78, 78)
+                        .addComponent(btnSaveFavMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(50, 50, 50)
+                        .addComponent(btnClearFavoriteMovies, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(815, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
@@ -130,10 +168,33 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
         init();
+        initDragNDrop();
     }//GEN-LAST:event_formComponentShown
+
+    private void btnClearFavoriteMoviesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFavoriteMoviesActionPerformed
+        favoriteMovies.clear();
+        favoriteMoviesModel.clear();
+    }//GEN-LAST:event_btnClearFavoriteMoviesActionPerformed
+
+    private void btnSaveFavMoviesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveFavMoviesActionPerformed
+        List<FavoriteMovie> favMov = new ArrayList<>();
+        for (Movie movie : favoriteMovies) {
+            favMov.add(new FavoriteMovie(movie.getId(), user.getId()));
+
+        }
+        try {
+            favoriteMovieRepository.createManny(favMov);
+            MessageUtils.showInformationMessage("Info", "Saved");
+        } catch (Exception ex) {
+            Logger.getLogger(FavoriteMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnSaveFavMoviesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClearFavoriteMovies;
+    private javax.swing.JButton btnSaveFavMovies;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
@@ -148,7 +209,20 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
     private DefaultListModel<Movie> favoriteMoviesModel;
     private Repository movieRepository;
     private Repository favoriteMovieRepository;
+    private List<Movie> favoriteMovies = new ArrayList<>();
+    private List<Movie> allMovies = new ArrayList<>();
+
     private User user; // new User (1, "pero");
+
+    private void initDragNDrop() {
+        lsMovies.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        lsMovies.setDragEnabled(true);
+        lsMovies.setTransferHandler(new ExportHandler());
+
+        lsFavoriteMovies.setDropMode(DropMode.ON);
+        lsFavoriteMovies.setTransferHandler(new ImportHandler());
+
+    }
 
     private void init() {
         try {
@@ -159,25 +233,35 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
             favoriteMoviesModel = new DefaultListModel<>();
             loadMovieModel();
             loadFavoriteMoviesModel();
-            lbUser.setText("Chose your favorite movie "+user.getUsername());
+            lbUser.setText("Chose your favorite movie " + user.getUsername());
         } catch (Exception ex) {
             Logger.getLogger(FavoriteMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
             MessageUtils.showErrorMessage("Unrecoverable error", "Cannot initiate the form");
             System.exit(1);
         }
     }
+
     public void setUser(User user) {
         this.user = user;
 
-        
     }
-    
 
     private void loadMovieModel() throws Exception {
-        List<Movie> movies = movieRepository.selectAll();
+        allMovies = movieRepository.selectAll();
         moviesModel.clear();
-        movies.forEach(moviesModel::addElement);
+        allMovies.forEach(moviesModel::addElement);
         lsMovies.setModel(moviesModel);
+    }
+
+    private void loadDropedMoviesModel() {
+
+        for (Movie movie : favoriteMovies) {
+            if (!favoriteMoviesModel.contains(movie)) {
+                favoriteMoviesModel.addElement(movie);
+            }
+        }
+
+        lsFavoriteMovies.setModel(favoriteMoviesModel);
     }
 
     private void loadFavoriteMoviesModel() throws Exception {
@@ -198,15 +282,54 @@ public class FavoriteMoviesPanel extends javax.swing.JPanel {
     }
 
     private List<FavoriteMovie> getFavMovie() throws Exception {
-        List<FavoriteMovie> favMovies = new ArrayList<>();
-        Optional<FavoriteMovie> favMovie = favoriteMovieRepository.select(user.getId());
+        List<FavoriteMovie> favMovies = favoriteMovieRepository.selectAll();
+        return favMovies.stream()
+                .filter(movie -> movie.getUserId() == user.getId())
+                .collect(Collectors.toList());
+    }
 
-        if (favMovie.isPresent()) {
-            favMovies.add((FavoriteMovie) favMovie.get());
+    private class ExportHandler extends TransferHandler {
 
+        @Override
+        public int getSourceActions(JComponent c) {
+            return COPY;
         }
 
-        return favMovies;
+        @Override
+        protected Transferable createTransferable(JComponent c) {
+            return new MovieTransferable(lsMovies.getSelectedValue());
+        }
+
+    }
+
+    private class ImportHandler extends TransferHandler {
+
+        @Override
+        public boolean canImport(TransferSupport support) {
+            return support.isDataFlavorSupported(MovieTransferable.MOVIE_FLAVOR);
+        }
+
+        @Override
+        public boolean importData(TransferSupport support) {
+            try {
+                Movie movie = (Movie) support
+                        .getTransferable()
+                        .getTransferData(MovieTransferable.MOVIE_FLAVOR);
+                if (!favoriteMovies.contains(movie)) { // provjeravamo da li se film već nalazi u listi
+                    favoriteMovies.add(movie);
+                    loadDropedMoviesModel();
+                    return true;
+                }
+
+            } catch (UnsupportedFlavorException | IOException ex) {
+                Logger.getLogger(FavoriteMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(FavoriteMoviesPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            return false;
+        }
+
     }
 
 }

@@ -30,13 +30,13 @@
               <EmptySpace pref="72" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Component id="btnLogin" alignment="1" max="32767" attributes="0"/>
-                  <Component id="tfPassword" alignment="0" max="32767" attributes="0"/>
                   <Component id="lbPasswordError" alignment="1" max="32767" attributes="0"/>
                   <Component id="tfUsername" alignment="1" max="32767" attributes="0"/>
                   <Component id="lbUsernameError" pref="400" max="32767" attributes="0"/>
                   <Component id="jLabel2" min="-2" pref="398" max="-2" attributes="0"/>
                   <Component id="jLabel3" alignment="0" min="-2" pref="117" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="0" min="-2" pref="89" max="-2" attributes="0"/>
+                  <Component id="tfPassword" max="32767" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
           </Group>
@@ -54,14 +54,14 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel3" min="-2" pref="24" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfUsername" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="tfUsername" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Component id="lbUsernameError" min="-2" pref="24" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="jLabel5" min="-2" pref="24" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="tfPassword" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="tfPassword" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="lbPasswordError" min="-2" pref="24" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btnLogin" min="-2" pref="39" max="-2" attributes="0"/>
@@ -129,8 +129,6 @@
         <Property name="text" type="java.lang.String" value="Error: username not valid"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="tfPassword">
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel5">
       <Properties>
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -147,6 +145,8 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="Error: password not valid"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="tfPassword">
     </Component>
   </SubComponents>
 </Form>

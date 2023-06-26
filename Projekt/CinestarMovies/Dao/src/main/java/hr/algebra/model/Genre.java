@@ -4,13 +4,20 @@
  */
 package hr.algebra.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+
 /**
  *
  * @author Nina
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public final class Genre {
-
+@XmlAttribute
     private int id;
+     @XmlElement(name = "genre")
     private String name;
 
     public Genre() {

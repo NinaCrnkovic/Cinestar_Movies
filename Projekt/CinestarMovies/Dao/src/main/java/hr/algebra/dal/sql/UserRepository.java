@@ -118,44 +118,43 @@ public class UserRepository implements Repository<User> {
     }
 
     public Optional<User> selectByUsernameAndPassword(User user) throws Exception {
-    DataSource dataSource = DataSourceSingleton.getInstance();
-    try (Connection con = dataSource.getConnection(); 
-         CallableStatement stmt = con.prepareCall(SELECT_SALT_BY_USERNAME)) {
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_SALT_BY_USERNAME)) {
 
-        stmt.setString(USERNAME, user.getUsername());
+            stmt.setString(USERNAME, user.getUsername());
 
-        String salt;
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                salt = rs.getString(PWD_SALT);
-            } else {
-                return Optional.empty(); // user not found
-            }
-        }
-
-        String hash = User.generateHash(user.getPassword(), salt);
-
-        try (CallableStatement stmt2 = con.prepareCall(SELECT_USER_BY_NAME_PASWORD)) {
-            stmt2.setString(USERNAME, user.getUsername());
-            stmt2.setString(PWD_HASH, hash);
-            stmt2.setString(PWD_SALT, salt);
-
-            try (ResultSet rs = stmt2.executeQuery()) {
+            String salt;
+            try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    User retrievedUser = new User(
-                            rs.getString(USERNAME),
-                            rs.getInt(ACCOUNT_TYPE_ID)
-                    );
-                    retrievedUser.setId(rs.getInt(ID_USER));
+                    salt = rs.getString(PWD_SALT);
+                } else {
+                    return Optional.empty(); // user not found
+                }
+            }
 
-                    return Optional.of(retrievedUser);
+            String hash = User.generateHash(user.getPassword(), salt);
+
+            try (CallableStatement stmt2 = con.prepareCall(SELECT_USER_BY_NAME_PASWORD)) {
+                stmt2.setString(USERNAME, user.getUsername());
+                stmt2.setString(PWD_HASH, hash);
+                stmt2.setString(PWD_SALT, salt);
+
+                try (ResultSet rs = stmt2.executeQuery()) {
+                    if (rs.next()) {
+                        int userId = rs.getInt(ID_USER);
+                        User retrievedUser = new User(
+                                userId,
+                                rs.getString(USERNAME),
+                                rs.getInt(ACCOUNT_TYPE_ID)
+                        );
+
+                        return Optional.of(retrievedUser);
+                    }
                 }
             }
         }
+        return Optional.empty();
     }
-    return Optional.empty();
-}
-
 
     @Override
     public List<User> selectAll() throws Exception {

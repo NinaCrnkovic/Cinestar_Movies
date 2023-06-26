@@ -38,6 +38,12 @@ public final class User {
 
     }
 
+    public User(int id, String username, int accountTypeId) {
+        this.id = id;
+        this.username = username;
+        this.accountTypeId = accountTypeId;
+    }
+
     public User(String username, int accountTypeId) {
 
         this.username = username;

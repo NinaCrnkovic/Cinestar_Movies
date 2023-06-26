@@ -1,17 +1,17 @@
 hr\algebra\dal\sql\FavoriteMovieRepository.class
 hr\algebra\model\AccountType.class
 hr\algebra\dal\Repository.class
+hr\algebra\dal\SQLServiceRepository.class
 hr\algebra\dal\sql\MovieRepository.class
+hr\algebra\dal\LoginService.class
 hr\algebra\dal\sql\MoviePersonRoleRepository.class
 hr\algebra\model\Person.class
-hr\algebra\model\Article.class
 hr\algebra\dal\sql\GenreRepository.class
 hr\algebra\model\MoviePersonRole.class
 hr\algebra\dal\sql\AccountTypeRepository.class
 hr\algebra\model\Genre.class
 hr\algebra\dal\RepositoryFactory.class
 hr\algebra\dal\sql\DataSourceSingleton.class
-hr\algebra\dal\SQLRepository.class
 hr\algebra\dal\sql\RoleRepository.class
 hr\algebra\dal\RepositoryFactory$RepoType.class
 hr\algebra\model\Movie.class
@@ -20,6 +20,7 @@ hr\algebra\dal\sql\SqlRepository.class
 hr\algebra\dal\sql\MovieGenreRepository.class
 hr\algebra\dal\RepositoryFactory$SqlRepoType.class
 hr\algebra\dal\sql\UserRepository.class
+hr\algebra\model\MovieTransferable.class
 hr\algebra\model\User.class
 hr\algebra\model\Role.class
 hr\algebra\model\FavoriteMovie.class

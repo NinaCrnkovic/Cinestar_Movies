@@ -32,6 +32,7 @@ public class FavoriteMovieRepository implements Repository<FavoriteMovie> {
     private static final String DELETE_FAVORITE_MOVIE = "{ CALL DeleteFavoriteMovie (?) }";
     private static final String SELECT_FAVORITE_MOVIE = "{ CALL SelectFavoriteMovie (?) }";
     private static final String SELECT_FAVORITE_MOVIES = "{ CALL SelectFavoriteMovies }";
+    private static final String SELECT_FAVORITE_MOVIES_BY_ID = "{ CALL SelectFavoriteMoviesById (?)}";
 
     @Override
     public int create(FavoriteMovie favoriteMovie) throws Exception {
@@ -105,6 +106,25 @@ public class FavoriteMovieRepository implements Repository<FavoriteMovie> {
         return Optional.empty();
     }
 
+    public List<FavoriteMovie> selectAllById(int userId) throws Exception {
+        List<FavoriteMovie> favoriteMovies = new ArrayList<>();
+        DataSource dataSource = DataSourceSingleton.getInstance();
+        try (Connection con = dataSource.getConnection(); CallableStatement stmt = con.prepareCall(SELECT_FAVORITE_MOVIES_BY_ID)) {
+
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    favoriteMovies.add(new FavoriteMovie(
+                            rs.getInt(ID_FAVORITE_MOVIE),
+                            rs.getInt(MOVIE_ID),
+                            rs.getInt(USER_ID)));
+                }
+            }
+        }
+        return favoriteMovies;
+    }
+
     @Override
     public List<FavoriteMovie> selectAll() throws Exception {
         List<FavoriteMovie> favoriteMovies = new ArrayList<>();
@@ -115,12 +135,10 @@ public class FavoriteMovieRepository implements Repository<FavoriteMovie> {
                 favoriteMovies.add(new FavoriteMovie(
                         rs.getInt(ID_FAVORITE_MOVIE),
                         rs.getInt(MOVIE_ID),
-                            rs.getInt(USER_ID)));
+                        rs.getInt(USER_ID)));
             }
         }
         return favoriteMovies;
     }
-
-    
 
 }

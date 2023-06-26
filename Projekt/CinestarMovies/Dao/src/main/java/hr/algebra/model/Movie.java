@@ -9,23 +9,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  *
  * @author Nina
  */
-public final class Movie {
+@XmlAccessorType(XmlAccessType.FIELD)
+public final class Movie implements Comparable<Movie> {
 
-    
-  
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-
-
+    @XmlAttribute
     private int id;
     private String title;
+    @XmlElement(name = "pubdate")
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime pubDate;
+    @XmlElement(name = "originaltitle")
+
     private String originalTitle;
     private String description;
     private int duration;
@@ -33,11 +40,19 @@ public final class Movie {
     private String poster;
     private String link;
     private String reservation;
+    @XmlElement(name = "displaydate")
+    @XmlJavaTypeAdapter(LocalDateTimeAdapter.class)
     private LocalDateTime displayDate;
     private String performances;
     private String trailer;
+    @XmlElementWrapper
+    @XmlElement(name = "genre")
     private List<Genre> genres;
+    @XmlElementWrapper
+    @XmlElement(name = "actor")
     private List<Person> actors;
+    @XmlElementWrapper
+    @XmlElement(name = "director")
     private List<Person> directors;
 
     public Movie() {
@@ -62,7 +77,7 @@ public final class Movie {
     public Movie(int id, String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String link, String reservation, LocalDateTime displayDate, String performances, String trailer) {
         this(title, pubDate, originalTitle, description, duration, year, poster, link, reservation, displayDate, performances, trailer);
         this.id = id;
-   
+
     }
 
     public Movie(int id, String title, LocalDateTime pubDate, String originalTitle, String description, int duration, int year, String poster, String link, String reservation, LocalDateTime displayDate, String performances, String trailer, List<Genre> genres, List<Person> actors, List<Person> directors) {
@@ -71,8 +86,6 @@ public final class Movie {
         this.actors = actors;
         this.directors = directors;
     }
-
-   
 
     public LocalDateTime getPubDate() {
         return pubDate;
@@ -194,9 +207,8 @@ public final class Movie {
     }
 
     public List<Person> getDirectors() {
-    return directors == null ? Collections.emptyList() : directors;
+        return directors == null ? Collections.emptyList() : directors;
     }
-
 
     public void setDirectors(List<Person> directors) {
         this.directors = directors;
@@ -227,6 +239,11 @@ public final class Movie {
     @Override
     public String toString() {
         return id + " - " + title;
+    }
+
+    @Override
+    public int compareTo(Movie otherMovie) {
+        return this.title.compareTo(otherMovie.title);
     }
 
 }

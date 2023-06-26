@@ -14,5 +14,6 @@ package hr.algebra.dal;
 public interface SQLServiceRepository {
     void clearDatabase();
  
+ 
     
 }

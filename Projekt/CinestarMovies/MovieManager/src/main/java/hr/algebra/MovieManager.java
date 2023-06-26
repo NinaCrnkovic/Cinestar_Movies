@@ -4,7 +4,9 @@
  */
 package hr.algebra;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import hr.algebra.dal.LoginService;
+import hr.algebra.dal.sql.DataSourceSingleton;
 import hr.algebra.model.User;
 import hr.algebra.utilities.MessageUtils;
 import hr.algebra.view.EditMoviesPanel;
@@ -12,26 +14,33 @@ import hr.algebra.view.FavoriteMoviesPanel;
 import hr.algebra.view.LoginPanel;
 import hr.algebra.view.RegisterPanel;
 import hr.algebra.view.UploadMoviesPanel;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.sql.DataSource;
+import javax.swing.UIManager;
 
 /**
  *
  * @author Nina
  */
-public class MovieManager extends javax.swing.JFrame implements LoginService{
+public class MovieManager extends javax.swing.JFrame implements LoginService {
 
     private static final String UPLOAD_MOVIES = "Admmin";
     private static final String EDIT_MOVIES = "Edit movies";
     private static final String LOGIN = "Login";
     private static final String REGISTER = "Register";
     private static final String FAVORITE_MOVIES = "Favorite movies";
-    
+      private static final String CREATE_ADMIN = "{ CALL CreateAdminUser }";
 
     /**
      * Creates new form ArticleManager
      */
     public MovieManager() {
         initComponents();
-        configurePanels();
+        init();
+      
     }
 
     /**
@@ -137,29 +146,11 @@ public class MovieManager extends javax.swing.JFrame implements LoginService{
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MovieManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MovieManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MovieManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MovieManager.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            UIManager.setLookAndFeel(new FlatDarkLaf());
+        } catch (Exception ex) {
+            System.err.println("Failed to initialize LaF");
         }
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -192,71 +183,87 @@ public class MovieManager extends javax.swing.JFrame implements LoginService{
 
         loginPanel.addLoginService(this);
         registerPanel.addLoginService(this);
-        
+
         tpContent.add(LOGIN, loginPanel);
         tpContent.add(REGISTER, registerPanel);
-        
 
     }
-    public void callLoginAndRegisterPanel(){
-        
+
+      private void init() {
+        configurePanels();
+        createAdminUserIfNotExist();
+    }
+    public void callLoginAndRegisterPanel() {
+
         tpContent.remove(uploadMoviesPanel);
         tpContent.remove(editMoviesPanel);
         tpContent.remove(favoriteMoviesPanel);
-        
-        
+
         loginPanel = new LoginPanel();
         registerPanel = new RegisterPanel();
 
         loginPanel.addLoginService(this);
         registerPanel.addLoginService(this);
-        
+
         tpContent.add(LOGIN, loginPanel);
         tpContent.add(REGISTER, registerPanel);
     }
-    
-    
-    public void callAdminPanel(){
+
+    public void callAdminPanel() {
         tpContent.remove(loginPanel);
-         tpContent.remove(registerPanel);
+        tpContent.remove(registerPanel);
         uploadMoviesPanel = new UploadMoviesPanel();
         tpContent.add(UPLOAD_MOVIES, uploadMoviesPanel);
     }
-    
-    public void callUserPanel(){
+
+    public void callUserPanel() {
         tpContent.remove(loginPanel);
         tpContent.remove(registerPanel);
         editMoviesPanel = new EditMoviesPanel();
         tpContent.add(EDIT_MOVIES, editMoviesPanel);
-        
+
         favoriteMoviesPanel = new FavoriteMoviesPanel();
         favoriteMoviesPanel.setUser(logedUser);
         tpContent.add(FAVORITE_MOVIES, favoriteMoviesPanel);
     }
 
-
-
-    
-
     @Override
     public void userLoginIn(User user) {
+
         logedUser = user;
-        if (user.getAccountTypeId() == 2){
-             callUserPanel();
-        }
-        else if(user.getAccountTypeId() == 1){
+        if (user.getAccountTypeId() == 2) {
+            callUserPanel();
+        } else if (user.getAccountTypeId() == 1) {
             callAdminPanel();
         }
-       
-         
-       
+
     }
-        
-        
 
     @Override
     public void userLoggedOut() {
-       logedUser = null;
-       callLoginAndRegisterPanel();
+        logedUser = null;
+        callLoginAndRegisterPanel();
     }
+
+    @Override
+    public void createAdminUserIfNotExist() {
+    DataSource dataSource = DataSourceSingleton.getInstance();
+    try (Connection con = dataSource.getConnection();
+         CallableStatement checkAdminStmt = con.prepareCall("SELECT COUNT(*) FROM [User] WHERE AccountTypeID = 1");
+         ResultSet rs = checkAdminStmt.executeQuery()) {
+
+        if (rs.next() && rs.getInt(1) == 0) {
+            try (CallableStatement createAdminStmt = con.prepareCall(CREATE_ADMIN)) {
+                createAdminStmt.execute();
+            }
+        }
+    } catch (SQLException e) {
+        // Log the exception or rethrow it as appropriate
+        MessageUtils.showErrorMessage("Error", "Cant create admin");
+    }
+}
+
+  
+
+
 }
